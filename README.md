@@ -11,11 +11,11 @@
 <a href="https://codecov.io/gh/yezz123/ormdantic">
     <img src="https://codecov.io/gh/yezz123/ormdantic/branch/main/graph/badge.svg"/>
 </a>
-<a href="https://pypi.org/project/ormdantic" target="_blank">
-    <img src="https://img.shields.io/pypi/v/ormdantic?color=%2334D058&label=pypi%20package" alt="Package version">
+<a href="https://pypi.org/project/sageai" target="_blank">
+    <img src="https://img.shields.io/pypi/v/sageai?color=%2334D058&label=pypi%20package" alt="Package version">
 </a>
-<a href="https://pypi.org/project/ormdantic" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/ormdantic.svg?color=%2334D058" alt="Supported Python versions">
+<a href="https://pypi.org/project/sageai" target="_blank">
+    <img src="https://img.shields.io/pypi/pyversions/sageai.svg?color=%2334D058" alt="Supported Python versions">
 </a>
 </p>
 
