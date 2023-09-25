@@ -22,6 +22,7 @@
 SageAI is a lightweight package that
 
 ## Key Features
+
 - File-based functions directory for OpenAI function calls
 - Functions typed with Pydantic (v1 only)
 - In memory Vector DB to reduce costs (not all functions get passed in as context)
@@ -30,7 +31,12 @@ SageAI is a lightweight package that
 - Extensible (bring your own vector db + implementation)
 - Lightweight
 
+## Requirements
+
+Pass
+
 ## Installation
+
 ```bash
 # pip
 $ pip install sageai
@@ -44,4 +50,5 @@ $ poetry add sageai
 Pass
 
 ## Contributing
-Please see our [contributing.md](/contributing.md).
+
+Please see our [CONTRIBUTING.md](/CONTRIBUTING.md).
