@@ -1,7 +1,7 @@
 ![Logo](https://github.com/0xnenlabs/SageAI/assets/45445790/7f8c786c-9027-456d-9eaa-f27d9880d52c)
 
 <p align="center">
-    <em>File-based functions for OpenAI ChatGPT's function calling with Pydantic support 🚀</em>
+    <em>File-based functions for ChatGPT's function calling with Pydantic support 🚀</em>
 </p>
 
 <p align="center">
@@ -19,4 +19,4 @@
 </a>
 </p>
 
-SageAI is a package that
+SageAI is a lightweight package that
