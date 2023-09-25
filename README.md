@@ -20,3 +20,21 @@
 </p>
 
 SageAI is a lightweight package that
+
+## Key Features
+- File-based functions directory for OpenAI function calls
+- Functions typed with Pydantic (v1 only)
+- In memory Vector DB to reduce costs (not all functions get passed in as context)
+- Supports asyncio/sync
+- Easily testable (both unit and integration)
+- Extensible (bring your own vector db + implementation)
+- Lightweight
+
+## Installation
+```bash
+# pip
+$ pip install sageai
+
+# poetry
+$ poetry add sageai
+```
