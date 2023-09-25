@@ -1,5 +1,4 @@
-![Logo](https://github.com/0xnenlabs/SageAI/assets/45445790/53919336-880f-4099-87c2-b14ba671db2c)
-
+![Logo](https://github.com/0xnenlabs/SageAI/assets/45445790/7f8c786c-9027-456d-9eaa-f27d9880d52c)
 
 <p align="center">
     <em>File-based functions for OpenAI ChatGPT's function calling with Pydantic support 🚀</em>
