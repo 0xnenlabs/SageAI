@@ -2,13 +2,17 @@ import os
 import time
 from typing import Any, Optional
 
-from sageai.config import get_config
+from sageai.config import get_config, set_config, Config
 from sageai.utils import process_timer
 
 # import openai
 
 
 class SageAI:
+    @staticmethod
+    def init(**config_args: "Config"):
+        set_config(**config_args)
+
     @staticmethod
     def ask(message: str):
         config = get_config()

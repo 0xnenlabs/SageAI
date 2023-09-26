@@ -1,5 +1,7 @@
-from sageai import SageAI, set_config
+from sageai import SageAI
 
-set_config(functions_directory=".gitignore", openai_key="123")
+# Init once on their app starting up
+SageAI.init(functions_directory=".gitignore", openai_key="123")
+
+# Anywhere in their codebase
 file = SageAI.ask("hello mate")
-# print(file)
