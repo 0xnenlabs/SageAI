@@ -11,9 +11,13 @@ class Config(BaseModel):
         None, description="File path to the functions directory"
     )
     openai_key: Optional[str] = Field(None, description="OpenAI key")
-    model: Optional[str] = Field(
+    function_calling_model: Optional[str] = Field(
         "gpt-3.5-turbo-0613",
-        description="OpenAI model to use (has to support function-calling)",
+        description="OpenAI model to use for function calling",
+    )
+    embeddings_model: Optional[str] = Field(
+        "text-embedding-ada-002",
+        description="OpenAI model to use for creating embeddings",
     )
 
 

@@ -6,7 +6,7 @@ import time
 from sageai.config import get_config
 
 
-class VectorSearchService:
+class VectorDBService:
     def __init__(self):
         self.data = []
         self.dim = 768
