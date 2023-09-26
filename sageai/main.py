@@ -3,7 +3,7 @@ import time
 from typing import Any, Optional
 
 from sageai.config import get_config, set_config, Config
-from sageai.utils import process_timer
+from sageai.utils import generate_functions_map, process_timer
 
 # import openai
 
@@ -18,6 +18,9 @@ class SageAI:
         config = get_config()
         print("message: ", message)
         print("config: ", config)
+
+        available_functions = generate_functions_map(config.functions_directory)
+        print("available_functions: ", available_functions)
 
         response, processing_time = SageAI.vector_search(message)
         print("response: ", response)

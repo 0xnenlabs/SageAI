@@ -3,7 +3,7 @@ import os
 
 
 def get_user_package_path():
-    caller_frame = inspect.stack()[3]
+    caller_frame = inspect.stack()[4]
     caller_module = inspect.getmodule(caller_frame[0])
 
     if caller_module is None or not hasattr(caller_module, "__file__"):
