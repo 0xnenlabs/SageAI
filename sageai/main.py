@@ -1,6 +1,9 @@
+import os
+import time
 from typing import Any, Optional
 
 from sageai.config import get_config
+from sageai.utils import process_timer
 
 # import openai
 
@@ -9,30 +12,31 @@ class SageAI:
     MAX_SUGGESTIONS = 3
     MAX_FUNC_CALLS = 1
 
-    def ask(self, message: str):
-        print("MESSAGE: ", message)
-
+    @staticmethod
+    def ask(message: str):
         config = get_config()
-        print("CONFIG: ", config)
+        print("message: ", message)
+        print("config: ", config)
 
-        functions_path = config.functions_path
-        with open(functions_path, "r") as file:
+        response, processing_time = SageAI.vector_search(message)
+        print("response: ", response)
+        print("processing_time: ", processing_time)
+
+        with open(config.functions_directory, "r") as file:
             content = file.read()
 
         return content
 
-    def run_message(
-        self, message: str, model: Optional[str] = "gpt-3.5-turbo-0613"
-    ) -> Any:
-        pass
-        # self.reset()
+    @process_timer
+    @staticmethod
+    def vector_search(message: str):
+        print("vector_search: ", message)
+        time.sleep(1)
+        return message
 
-        # self.logger.info(f"Running message: {message}")
-        # # TODO when this turns into an actual application with memory and history,
-        # #  this should be switched to a session-based set not a reset.
-        # #  this means get the user's message and result history and set it properly on the instance.
-        # self.message_history.append(SystemMessage(content=get_system_prompt()))
-        # self.message_history.append(HumanMessage(content=message))
+    @staticmethod
+    def run_message(message: str, model: Optional[str] = "gpt-3.5-turbo-0613") -> Any:
+        pass
 
         # # Vector DB Search
         # vector_search_start_time = time.time()
@@ -151,9 +155,8 @@ class SageAI:
 
         # return self.result_history
 
-    def run_function(
-        self, func_name: str, args: Optional[dict[str, Any]] = None
-    ) -> Any:
+    @staticmethod
+    def run_function(func_name: str, args: Optional[dict[str, Any]] = None) -> Any:
         pass
         # self.logger.info(
         #     f"\n[Sennin] Running function: {func_name} with args {args}, keyword map {keyword_map}",

@@ -1,10 +1,16 @@
+import inspect
+import os
 from typing import Optional
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, root_validator
+
+from sageai.utils import format_config_args
 
 
 class Config(BaseModel):
-    functions_path: str = Field(..., description="File path to the functions directory")
-    openai_key: str = Field(..., description="OpenAI key")
+    functions_directory: Optional[str] = Field(
+        None, description="File path to the functions directory"
+    )
+    openai_key: Optional[str] = Field(None, description="OpenAI key")
     model: Optional[str] = Field(
         "gpt-3.5-turbo-0613",
         description="OpenAI model to use (has to support function-calling)",
@@ -18,6 +24,7 @@ def set_config(**kwargs: "Config"):
     """Set the configuration parameters."""
     global _config
     try:
+        kwargs = format_config_args(kwargs)
         _config = Config(**kwargs)
     except ValidationError as e:
         raise TypeError(f"Invalid configuration: {e}")
