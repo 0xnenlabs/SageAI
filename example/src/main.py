@@ -1,10 +1,13 @@
 from sageai import SageAI
 
 # Init on startup
-sageai = SageAI(openai_key="", functions_directory="functions")
+sageai = SageAI(
+    openai_key="",
+    functions_directory="functions",
+)
 
 # In a CI/CD pipeline or in dev mode on startup/hot reload
-sageai.vectordb.index()
+sageai.index()
 
 # Anywhere in the codebase
 message = "What's the weather like in Boston right now?"
