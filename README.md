@@ -19,11 +19,9 @@
 </a>
 </p>
 
-SageAI provides a structured approach to managing ChatGPT function calls through a modular, file-based organization, streamlining the categorization and handling of functions.
-
 ## Key Features
 
-- Organization through file-centric functions.
+- Organization through file-centric functions, organized in directories.
 - Strong typing for functions using Pydantic.
 - Built-in in-memory FAISS vector database, with the option to integrate your own.
 - Easily test each function with an associated test.json file, supporting both unit and integration tests.
@@ -48,15 +46,46 @@ $ pip install sageai
 $ poetry add sageai
 ```
 
+## Functions Format
+
+```python
+from typing import Optional
+
+from pydantic import BaseModel, Field
+
+from sageai.types.function import Function
+
+
+class FunctionInput(BaseModel):
+    location: str = Field(..., description="The city and state, e.g. San Francisco, CA.")
+
+
+class FunctionOutput(BaseModel):
+    weather: str
+
+
+def get_current_weather(params: FunctionInput) -> FunctionOutput:
+    weather = f"The weather in {params.location} is currently 22 degrees {params.unit}."
+    return FunctionOutput(weather=weather)
+
+
+function = Function(
+    function=get_current_weather,
+    description="Get the current weather in a given location.",
+)
+```
+
 ## Setup
 
-Create a `functions` directory in the root directory. Then initalize `SageAI`.
+Create a `functions` directory in the root directory, and add your functions as described in the section above. 
+
+Then initalize `SageAI`.
 
 ```python
 sageai = SageAI(openai_key="")
 ```
 
-Then index the vector database with our functions:
+Then index the vector database.
 
 ```python
 sageai.index()
