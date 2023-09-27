@@ -1,6 +1,5 @@
-from typing import Any, List
 from logging import getLogger
-import numpy as np
+from typing import Any, List
 
 import openai
 
@@ -19,23 +18,30 @@ class OpenAIService:
         openai.api_key = self.api_key
         self.openai = openai
 
-    def create_embeddings(self, text: str):
+    def create_embeddings(self, text: str) -> List[float]:
+        print("model: ", self.embeddings_model)
         response = self.openai.Embedding.create(
             input=text,
             model=self.embeddings_model,
         )
-        embeddings = np.array([entry["embedding"] for entry in response["data"]])
+        embeddings = response["data"][0]["embedding"]
         return embeddings
 
     def chat(
-        self, functions: List[dict[str, Any]], messages, model: str, temperature: float
-    ):
+        self,
+        functions: List[dict[str, Any]],
+        messages,
+        **kwargs: Any,
+    ) -> str:
         response = openai.ChatCompletion.create(
-            model=model if model else self.function_calling_model,
-            temperature=temperature if temperature else None,
-            messages=messages,
+            model=kwargs["model"] if "model" in kwargs else self.function_calling_model,
+            messages=[dict(role="user", content=messages)],
             functions=functions,
-            function_call="auto",
+            **kwargs,
         )
         response_message = response["choices"][0]["message"]
         return response_message
+
+    @staticmethod
+    def get_embeddings_size():
+        return 1536

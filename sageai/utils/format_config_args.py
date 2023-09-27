@@ -26,5 +26,4 @@ def format_config_args(args):
         # Strip './' from the beginning and then join with the base path
         relative_path = args["functions_directory"][2:]
         args["functions_directory"] = os.path.join(base_path, relative_path)
-
     return args

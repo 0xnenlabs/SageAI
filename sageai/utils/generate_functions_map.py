@@ -1,27 +1,16 @@
-import importlib
-from logging import Logger
 import os
+from importlib import util
+from logging import Logger
 from types import ModuleType
-from typing import List, Optional
+from typing import List
+
 from sageai.types.function import Function
 from sageai.utils.logger import get_logger
 
 
-def find_parent_with_child(start_path, target_child_name):
-    current_path = os.path.abspath(start_path)
-
-    while current_path != os.path.dirname(current_path):
-        potential_child_path = os.path.join(current_path, target_child_name)
-        if os.path.isdir(potential_child_path):
-            return current_path
-        current_path = os.path.dirname(current_path)
-
-    raise Exception("Can't find project root directory.")
-
-
 def load_module_from_file(filename: str, filepath: str) -> ModuleType:
-    spec = importlib.util.spec_from_file_location(filename, filepath)
-    module = importlib.util.module_from_spec(spec)
+    spec = util.spec_from_file_location(filename, filepath)
+    module = util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
 
@@ -33,11 +22,6 @@ def get_functions_directories(
     logger.info(
         f"Getting functions directories from {functions_directory_path}",
     )
-
-    for dirpath, dirnames, filenames in os.walk(functions_directory_path):
-        print("---\ndirpath: ", dirpath)
-        print("dirnames: ", dirnames)
-        print("filenames: ", filenames)
 
     function_directories = [
         dirpath

@@ -1,49 +1,63 @@
-import os
-import time
-from typing import Any, Optional
+from typing import Optional, Dict
 
-from sageai.config import get_config, set_config, Config
-from sageai.utils import generate_functions_map, process_timer
-
-# import openai
+from sageai.config import get_config, set_config
+from sageai.services.defaultvectordb_service import DefaultVectorDBService
+from sageai.services.openai_service import OpenAIService
+from sageai.types.function import Function
+from sageai.utils import generate_functions_map
 
 
 class SageAI:
-    @staticmethod
-    def init(**config_args: "Config"):
+    def __init__(
+        self,
+        *,
+        openai_key: str,
+        functions_directory: Optional[str] = None,
+        function_calling_model: Optional[str] = None,
+        embeddings_model: Optional[str] = None,
+        vectordb: Optional = None,
+    ):
+        config_args = {
+            "openai_key": openai_key
+        }
+
+        if functions_directory is not None:
+            config_args["functions_directory"] = functions_directory
+        if function_calling_model is not None:
+            config_args["function_calling_model"] = function_calling_model
+        if embeddings_model is not None:
+            config_args["embeddings_model"] = embeddings_model
         set_config(**config_args)
+        self.config = get_config()
+        self.function_map: Dict[str, Function] = generate_functions_map(
+            self.config.functions_directory
+        )
+        self.vectordb = vectordb or DefaultVectorDBService()
+        self.openai = OpenAIService()
 
-    @staticmethod
-    def ask(message: str):
-        config = get_config()
-        print("message: ", message)
-        print("config: ", config)
+    def chat(self, *, message: str, options: Optional[Dict] = None) -> str:
+        """
+        High-level function that calls the vector database, OpenAI, and the function, and returns
+        the result.
+        :param message: the message
+        :param options:
+        :return:
+        """
+        if options is None:
+            options = {}
 
-        available_functions = generate_functions_map(config.functions_directory)
-        print("available_functions: ", available_functions)
+        top_functions = self.get_top_n_functions(message=message, k=options.get("k") or 5)
+        openai_result = self.openai.chat(
+            functions=top_functions,
+            messages=[message],
+        )
+        print("response: ", openai_result)
+        return openai_result
 
-        response, processing_time = SageAI.vector_search(message)
-        print("response: ", response)
-        print("processing_time: ", processing_time)
+    def get_top_n_functions(self, *, message: str, k: int):
+        return self.vectordb.search(query=message, k=k)
 
-        # testing reads
-        # with open(config.functions_directory, "r") as file:
-        #     content = file.read()
-
-        # return content
-
-    @process_timer
-    @staticmethod
-    def vector_search(message: str):
-        print("vector_search: ", message)
-        time.sleep(1)
-        return message
-
-    @process_timer
-    @staticmethod
-    def get_function(message: str):
-        print("get_function: ", message)
-        time.sleep(1)
+    def run_function(self, *, message: str):
         return message
 
     # @staticmethod

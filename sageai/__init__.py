@@ -1,1 +1,1 @@
-from sageai.main import SageAI
+from sageai.sageai import SageAI

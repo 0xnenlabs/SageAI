@@ -8,11 +8,12 @@ readme = "README.md"
 keywords = ["python", "openai", "functions", "chatgpt", "gpt4", "genai"]
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.13"
-pydantic = "^2.4.0"
+python = ">=3.9,<3.12"
+pydantic = ">=1.6,<=1.10.12"
 openai = "^0.28.1"
-faiss-cpu = "^1.7.4"
 numpy = "^1.26.0"
+black = "^23.9.1"
+qdrant-client = "^1.5.4"
 
 
 [build-system]
