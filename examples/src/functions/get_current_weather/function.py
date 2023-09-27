@@ -12,8 +12,12 @@ class UnitTypes(str, Enum):
 
 
 class FunctionInput(BaseModel):
-    location: str = Field(..., description="The city and state, e.g. San Francisco, CA.")
-    unit: Optional[UnitTypes] = Field(UnitTypes.CELSIUS.value, description="The unit of temperature.")
+    location: str = Field(
+        ..., description="The city and state, e.g. San Francisco, CA."
+    )
+    unit: Optional[UnitTypes] = Field(
+        UnitTypes.CELSIUS, description="The unit of temperature."
+    )
 
 
 class FunctionOutput(BaseModel):
@@ -21,7 +25,9 @@ class FunctionOutput(BaseModel):
 
 
 def get_current_weather(params: FunctionInput) -> FunctionOutput:
-    weather = f"The weather in {params.location} is currently 22 degrees {params.unit}."
+    weather = (
+        f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
+    )
     return FunctionOutput(weather=weather)
 
 
