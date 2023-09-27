@@ -91,8 +91,10 @@ Pass
 
 ## Roadmap
 
-- Asyncio support
-- Custom logger
+- Add tests
+- Support streaming
+- Support asyncio
+- Add debug flag for logger
 - Support Pydantic V2
 - Write Chainlit example
 - Write fullstack example
