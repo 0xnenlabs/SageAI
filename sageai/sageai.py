@@ -2,7 +2,6 @@ import json
 from typing import Optional, Dict, Any
 
 from sageai.config import get_config, set_config, LogLevel
-from sageai.services.default_vectordb_service import DefaultVectorDBService
 from sageai.services.openai_service import OpenAIService
 from sageai.types.abstract_vectordb import AbstractVectorDB
 from sageai.utils.generate_functions_map import generate_functions_map
@@ -30,17 +29,15 @@ class SageAI:
             config_args["embeddings_model"] = embeddings_model
         if log_level is not None:
             config_args["log_level"] = LogLevel(log_level)
+        if vectordb is not None:
+            config_args["vectordb"] = vectordb
 
         set_config(**config_args)
         self.config = get_config()
 
         self.openai = OpenAIService()
         self.function_map = generate_functions_map(self.config.functions_directory)
-        self.vectordb = (
-            vectordb(function_map=self.function_map)
-            if vectordb
-            else DefaultVectorDBService(function_map=self.function_map)
-        )
+        self.vectordb = self.config.vectordb(function_map=self.function_map)
 
     def chat(self, *, message: str, options: Optional[Dict] = None) -> str:
         """

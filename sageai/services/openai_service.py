@@ -2,11 +2,11 @@ from typing import Any, List, Dict
 
 import openai
 
-from sageai.config import get_config
-
 
 class OpenAIService:
     def __init__(self):
+        from sageai.config import get_config
+
         config = get_config()
         self.api_key = config.openai_key
         self.function_calling_model = config.function_calling_model
