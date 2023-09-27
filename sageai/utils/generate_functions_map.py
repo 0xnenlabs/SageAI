@@ -2,7 +2,6 @@ import os
 from importlib import util
 from types import ModuleType
 from typing import List
-from sageai.config import get_config
 
 from sageai.types.function import Function
 from sageai.utils.logger import get_logger
@@ -32,8 +31,12 @@ def get_functions_directories(
     return sorted(function_directories)
 
 
-def generate_functions_map(functions_directory_path: str) -> dict[str, Function]:
-    log_level = get_config().log_level
+def generate_functions_map() -> dict[str, Function]:
+    from sageai.config import get_config
+
+    config = get_config()
+    functions_directory_path = config.functions_directory
+    log_level = config.log_level
     logger = get_logger(log_level)
     available_functions = {}
 

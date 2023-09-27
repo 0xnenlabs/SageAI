@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from sageai.types.function import Function
-
 
 class AbstractVectorDB(ABC):
-    def __init__(self, function_map: dict[str, Function]):
-        self.function_map = function_map
+    def __init__(self):
+        from sageai.config import get_function_map
+
+        self.function_map = get_function_map()
 
     def format_search_result(self, function_names: List[str]):
         potential_functions = [

@@ -8,14 +8,13 @@ from sageai.types.abstract_vectordb import AbstractVectorDB
 from sageai.types.function import Function
 
 
-class DefaultVectorDBService(AbstractVectorDB):
-    def __init__(self, function_map: dict[str, Function]):
-        super().__init__(function_map=function_map)
+class CustomVectorDB(AbstractVectorDB):
+    def __init__(self):
+        super().__init__()
 
-        self.client = QdrantClient(":memory:")
         self.openai = OpenAIService()
+        self.client = QdrantClient(":memory:")
         self.collection = "functions"
-        self.function_map = function_map
 
     def index(self):
         self.client.recreate_collection(

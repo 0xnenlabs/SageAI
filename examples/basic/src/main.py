@@ -14,5 +14,5 @@ response = sageai.chat(
     sageai=dict(k=5),
 )
 
-print(message)
-print(response)
+print(f"Message: {message}")
+print(f"Response: {response}")
