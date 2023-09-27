@@ -1,5 +1,5 @@
 from logging import getLogger
-from typing import Any, List
+from typing import Any, List, Dict
 
 import openai
 
@@ -19,7 +19,6 @@ class OpenAIService:
         self.openai = openai
 
     def create_embeddings(self, text: str) -> List[float]:
-        print("model: ", self.embeddings_model)
         response = self.openai.Embedding.create(
             input=text,
             model=self.embeddings_model,
@@ -30,12 +29,12 @@ class OpenAIService:
     def chat(
         self,
         functions: List[dict[str, Any]],
-        messages,
+        message: str,
         **kwargs: Any,
-    ) -> str:
+    ) -> Dict[str, Any]:
         response = openai.ChatCompletion.create(
             model=kwargs["model"] if "model" in kwargs else self.function_calling_model,
-            messages=[dict(role="user", content=messages)],
+            messages=[dict(role="user", content=message)],
             functions=functions,
             **kwargs,
         )
