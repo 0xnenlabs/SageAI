@@ -33,7 +33,9 @@ class DefaultVectorDBService(AbstractVectorDB):
         records = [
             models.Record(
                 id=idx,
-                vector=self.openai.create_embeddings(text=format_func_embedding(func)),
+                vector=self.openai.create_embeddings(
+                    model="text-embedding-ada-002", input=format_func_embedding(func)
+                ),
                 payload={"func_name": func_name},
             )
             for idx, (func_name, func) in enumerate(self.function_map.items())
@@ -44,7 +46,10 @@ class DefaultVectorDBService(AbstractVectorDB):
         )
 
     def embed(self, query: str):
-        return self.openai.create_embeddings(query)
+        return self.openai.create_embeddings(
+            model="text-embedding-ada-002",
+            input=query,
+        )
 
     def format_query(self, *, query: str):
         return query.lower()

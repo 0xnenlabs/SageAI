@@ -13,8 +13,8 @@ def find_pydantic_model(
         cls
         for name, cls in vars(module).items()
         if isinstance(cls, type)
-           and issubclass(cls, BaseModel)
-           and name.endswith(
+        and issubclass(cls, BaseModel)
+        and name.endswith(
             keyword,
         )
     ]

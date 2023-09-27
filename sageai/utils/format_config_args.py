@@ -13,17 +13,19 @@ def get_user_package_path():
     return os.path.dirname(module_path)
 
 
-def format_config_args(args):
-    if not os.path.isabs(args["functions_directory"]) and not args[
+def format_config_args(**kwargs):
+    if "functions_directory" not in kwargs:
+        kwargs["functions_directory"] = "functions"
+    if not os.path.isabs(kwargs["functions_directory"]) and not kwargs[
         "functions_directory"
     ].startswith("./"):
         base_path = get_user_package_path()
-        args["functions_directory"] = os.path.join(
-            base_path, args["functions_directory"]
+        kwargs["functions_directory"] = os.path.join(
+            base_path, kwargs["functions_directory"]
         )
-    elif args["functions_directory"].startswith("./"):
+    elif kwargs["functions_directory"].startswith("./"):
         base_path = get_user_package_path()
         # Strip './' from the beginning and then join with the base path
-        relative_path = args["functions_directory"][2:]
-        args["functions_directory"] = os.path.join(base_path, relative_path)
-    return args
+        relative_path = kwargs["functions_directory"][2:]
+        kwargs["functions_directory"] = os.path.join(base_path, relative_path)
+    return kwargs

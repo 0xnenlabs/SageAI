@@ -15,18 +15,11 @@ class Config(BaseModel):
     functions_directory: Optional[str] = Field(
         "functions", description="The directory of functions."
     )
-    function_calling_model: Optional[str] = Field(
-        "gpt-3.5-turbo-0613",
-        description="The OpenAI model to use for function calling.",
-    )
-    embeddings_model: Optional[str] = Field(
-        "text-embedding-ada-002", description="The OpenAI model to use for embeddings."
-    )
-    log_level: Optional[LogLevel] = Field(
-        LogLevel.INFO, description="The desired log level for output."
-    )
     vectordb: Optional[AbstractVectorDB] = Field(
         DefaultVectorDBService, description="VectorDB class reference."
+    )
+    log_level: Optional[LogLevel] = Field(
+        LogLevel.ERROR, description="The desired log level for output."
     )
 
     class Config:
@@ -40,7 +33,7 @@ def set_config(**kwargs):
     """Set the configuration parameters."""
     global _config
     try:
-        kwargs = format_config_args(kwargs)
+        kwargs = format_config_args(**kwargs)
         _config = Config(**kwargs)
         return _config
     except ValidationError as e:
