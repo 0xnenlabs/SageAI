@@ -1,12 +1,11 @@
 import json
 from typing import Optional, Dict, Any
 
-from sageai.config import get_config, set_config
+from sageai.config import get_config, set_config, LogLevel
 from sageai.services.default_vectordb_service import DefaultVectorDBService
 from sageai.services.openai_service import OpenAIService
 from sageai.types.abstract_vectordb import AbstractVectorDB
-from sageai.types.function import Function
-from sageai.utils import generate_functions_map
+from sageai.utils.generate_functions_map import generate_functions_map
 from sageai.utils.inspection_utilities import get_input_parameter_type
 
 
@@ -19,6 +18,7 @@ class SageAI:
         function_calling_model: Optional[str] = None,
         embeddings_model: Optional[str] = None,
         vectordb: Optional[AbstractVectorDB] = None,
+        log_level: Optional[LogLevel] = None,
     ):
         config_args = {"openai_key": openai_key}
 
@@ -28,8 +28,12 @@ class SageAI:
             config_args["function_calling_model"] = function_calling_model
         if embeddings_model is not None:
             config_args["embeddings_model"] = embeddings_model
+        if log_level is not None:
+            config_args["log_level"] = LogLevel(log_level)
+
         set_config(**config_args)
         self.config = get_config()
+
         self.openai = OpenAIService()
         self.function_map = generate_functions_map(self.config.functions_directory)
         self.vectordb = (

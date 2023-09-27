@@ -4,6 +4,7 @@ from sageai import SageAI
 sageai = SageAI(
     openai_key="",
     functions_directory="functions",
+    log_level="WARNING",
 )
 
 # In a CI/CD pipeline or in dev mode on startup/hot reload

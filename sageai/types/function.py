@@ -3,8 +3,15 @@ from typing import Any, Callable, Dict, List, Type
 from pydantic import BaseModel
 
 from sageai.utils.inspection_utilities import get_input_parameter_type
-from sageai.utils.model_utilities import is_enum_array, get_enum_array_values, is_enum, get_possible_values, is_array, \
-    get_array_item_type, is_optional
+from sageai.utils.model_utilities import (
+    is_enum_array,
+    get_enum_array_values,
+    is_enum,
+    get_possible_values,
+    is_array,
+    get_array_item_type,
+    is_optional,
+)
 
 
 class Function(BaseModel):

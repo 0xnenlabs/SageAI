@@ -1,8 +1,8 @@
 import os
 from importlib import util
-from logging import Logger
 from types import ModuleType
 from typing import List
+from sageai.config import get_config
 
 from sageai.types.function import Function
 from sageai.utils.logger import get_logger
@@ -16,7 +16,7 @@ def load_module_from_file(filename: str, filepath: str) -> ModuleType:
 
 
 def get_functions_directories(
-    logger: Logger,
+    logger,
     functions_directory_path: str = None,
 ) -> List[str]:
     logger.info(
@@ -33,7 +33,8 @@ def get_functions_directories(
 
 
 def generate_functions_map(functions_directory_path: str) -> dict[str, Function]:
-    logger = get_logger()
+    log_level = get_config().log_level
+    logger = get_logger(log_level)
     available_functions = {}
 
     logger.info("Generating function map")

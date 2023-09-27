@@ -1,8 +1,11 @@
+from enum import Enum
+import logging
 from typing import Optional
 
 from pydantic import BaseModel, ValidationError, Field
+from sageai.types.log_level import LogLevel
 
-from sageai.utils import format_config_args
+from sageai.utils.format_config_args import format_config_args
 
 
 class Config(BaseModel):
@@ -17,9 +20,10 @@ class Config(BaseModel):
     embeddings_model: Optional[str] = Field(
         "text-embedding-ada-002", description="The OpenAI model to use for embeddings."
     )
+    log_level: Optional[LogLevel] = Field(LogLevel.INFO, description="Log level")
 
 
-_config = Config(openai_key="OPENAI_API_KEY")  # TODO change this
+_config = Config(openai_key="")
 
 
 def set_config(**kwargs):
