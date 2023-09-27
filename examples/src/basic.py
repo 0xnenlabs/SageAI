@@ -2,7 +2,7 @@ from sageai import SageAI
 
 # Init on startup
 sageai = SageAI(
-    openai_key="",
+    openai_key="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",
     functions_directory="functions",
     log_level="WARNING",
 )

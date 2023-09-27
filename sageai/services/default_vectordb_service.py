@@ -10,6 +10,8 @@ from sageai.types.function import Function
 
 class DefaultVectorDBService(AbstractVectorDB):
     def __init__(self, function_map: dict[str, Function]):
+        super().__init__(function_map=function_map)
+
         self.client = QdrantClient(":memory:")
         self.openai = OpenAIService()
         self.collection = "functions"
@@ -49,14 +51,12 @@ class DefaultVectorDBService(AbstractVectorDB):
 
     def search(self, query: str, k: int) -> List[Dict[str, Any]]:
         formatted_query = self.format_query(query=query)
-        query_embedding = self.openai.create_embeddings(text=formatted_query)
+        query_embedding = self.embed(query=formatted_query)
         hits = self.client.search(
             collection_name=self.collection,
             query_vector=query_embedding,
             limit=k,
         )
         func_names = [hit.payload["func_name"] for hit in hits]
-        potential_functions = [
-            self.function_map[func_name].parameters for func_name in func_names
-        ]
-        return potential_functions
+
+        return self.format_search_result(function_names=func_names)
