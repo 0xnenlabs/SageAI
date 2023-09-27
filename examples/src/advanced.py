@@ -1,8 +1,8 @@
 from typing import List, Dict, Any
 
 from sageai import SageAI
-from sageai.types.function import Function
 from sageai.types.abstract_vectordb import AbstractVectorDB
+from sageai.types.function import Function
 
 
 # Define your own VectorDB implementation:

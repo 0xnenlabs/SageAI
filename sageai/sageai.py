@@ -38,9 +38,9 @@ class SageAI:
         merged = {i: v for i, v in enumerate(args)}
         merged.update(kwargs)
 
-        sageai_dict = {key: merged[key] for key in ['sageai'] if key in merged}
-        sageai_dict = sageai_dict['sageai'] if 'sageai' in sageai_dict else {}
-        openai_dict = {key: merged[key] for key in merged if key != 'sageai'}
+        sageai_dict = {key: merged[key] for key in ["sageai"] if key in merged}
+        sageai_dict = sageai_dict["sageai"] if "sageai" in sageai_dict else {}
+        openai_dict = {key: merged[key] for key in merged if key != "sageai"}
 
         if openai_dict.get("model") is None:
             raise Exception("No model provided.")
@@ -55,7 +55,9 @@ class SageAI:
         if latest_user_message is None:
             raise Exception("No user message found.")
 
-        top_functions = self.get_top_n_functions(message=latest_user_message["content"], k=sageai_dict.get("k"))
+        top_functions = self.get_top_n_functions(
+            message=latest_user_message["content"], k=sageai_dict.get("k")
+        )
         openai_result = self.openai.chat(**openai_dict, functions=top_functions)
 
         if "function_call" not in openai_result:
