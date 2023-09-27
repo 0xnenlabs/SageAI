@@ -6,18 +6,17 @@ from qdrant_client.http.models import models
 from sageai.services.openai_service import OpenAIService
 from sageai.types.abstract_vectordb import AbstractVectorDB
 from sageai.types.function import Function
-from sageai.utils import generate_functions_map
 
 
 class DefaultVectorDBService(AbstractVectorDB):
-    def __init__(self):
+    def __init__(self, function_map: dict[str, Function]):
         from sageai.config import get_config
-        super().__init__()
+
         self.client = QdrantClient(":memory:")
         self.openai = OpenAIService()
         self.config = get_config()
         self.collection = "functions"
-        self.function_map = generate_functions_map(self.config.functions_directory)
+        self.function_map = function_map
 
     def index(self):
         self.client.recreate_collection(
@@ -61,7 +60,6 @@ class DefaultVectorDBService(AbstractVectorDB):
         )
         func_names = [hit.payload["func_name"] for hit in hits]
         potential_functions = [
-            self.function_map[func_name].parameters
-            for func_name in func_names
+            self.function_map[func_name].parameters for func_name in func_names
         ]
         return potential_functions

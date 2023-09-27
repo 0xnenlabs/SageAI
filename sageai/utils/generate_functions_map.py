@@ -39,7 +39,6 @@ def generate_functions_map(functions_directory_path: str) -> dict[str, Function]
     logger.info("Generating function map")
     functions_directory = get_functions_directories(logger, functions_directory_path)
 
-    logger.info("functions_directory", extra={"asd": functions_directory})
     for dirpath in functions_directory:
         folder_name = os.path.basename(dirpath)
         function_file = os.path.join(dirpath, "function.py")
@@ -56,4 +55,5 @@ def generate_functions_map(functions_directory_path: str) -> dict[str, Function]
         raise Exception("No functions found")
     logger.info(f"Function map generated with {len(available_functions)} functions")
     available_functions = dict(sorted(available_functions.items()))
+
     return available_functions

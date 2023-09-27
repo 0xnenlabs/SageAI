@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from sageai.types.function import Function
+
 
 class AbstractVectorDB(ABC):
-    def __init__(self):
+    def __init__(self, function_map: dict[str, Function]):
         pass
 
     @abstractmethod
