@@ -138,8 +138,8 @@ Pass
 
 ## Examples
 
-- [basic](/examples/basic)
-- [advanced](/examples/advanced)
+- [basic](/examples/1-basic)
+- [advanced](/examples/2-advanced)
 
 ## Limitations
 
