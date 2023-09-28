@@ -1,6 +1,6 @@
 from sageai import SageAI
 
-from .customvectordb import CustomVectorDB
+from customvectordb import CustomVectorDB
 
 # Init on startup
 sage = SageAI(
