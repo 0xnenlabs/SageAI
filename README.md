@@ -311,6 +311,8 @@ As for the optional `test.json` file in each function, follow this structure:
 
 SageAI offers unit and integration tests.
 
+***
+
 ### Unit Tests
 
 > Unit tests do not call the vector database nor ChatGPT, and **will not** cost you money.
@@ -325,6 +327,8 @@ SageAI offers unit and integration tests.
   on
   the input alone by calling `func(test_case["input"]) == test_case["output"]`.
 
+***
+
 ### Integration Tests
 
 > Integration tests will call the vector database and ChatGPT, and **will** cost you money.
@@ -336,6 +340,8 @@ SageAI offers unit and integration tests.
 > Because ChatGPT's responses can vary, integration tests may return different results each time.
 > It's important to use integration tests as a tool to ensure ChatGPT is able to call the right function with the right
 > input, and not as a definitive test to measure the test rate of your functions.
+
+***
 
 ### Output Equality
 
@@ -358,6 +364,8 @@ the `weather` field in the `__eq__` method.
 
 This is especially useful when you are returning an object from a database, for example, and you only care to test
 against a subset of the fields (for example, the `id` field).
+
+***
 
 ### CLI
 
