@@ -39,7 +39,7 @@
 - Easily test each function with an associated `test.json` file, supporting both unit and integration tests.
 - Built with CI/CD in mind, ensuring synchronicity between your vector db and the functions directory across all
   environments.
-- Lightweight implementation with only three dependencies: `openai`, `pydantic`, and `qdrant-client`.
+- Lightweight implementation with only four dependencies: `openai`, `pydantic`, `qdrant-client`, and `pytest`.
 
 ## Requirements
 
@@ -86,38 +86,38 @@ from sageai.types.function import Function
 
 
 class UnitTypes(str, Enum):
-  CELSIUS = "Celsius"
-  FAHRENHEIT = "Fahrenheit"
+    CELSIUS = "Celsius"
+    FAHRENHEIT = "Fahrenheit"
 
 
 class FunctionInput(BaseModel):
-  location: str = Field(
-    ..., description="The city and state, e.g. San Francisco, CA."
-  )
-  unit: Optional[UnitTypes] = Field(
-    UnitTypes.CELSIUS, description="The unit of temperature."
-  )
+    location: str = Field(
+        ..., description="The city and state, e.g. San Francisco, CA."
+    )
+    unit: Optional[UnitTypes] = Field(
+        UnitTypes.CELSIUS, description="The unit of temperature."
+    )
 
 
 class FunctionOutput(BaseModel):
-  weather: str
+    weather: str
 
-  def __eq__(self, other):
-    if not isinstance(other, FunctionOutput):
-      return False
-    return self.weather == other.weather
+    def __eq__(self, other):
+        if not isinstance(other, FunctionOutput):
+            return False
+        return self.weather == other.weather
 
 
 def get_current_weather(params: FunctionInput) -> FunctionOutput:
-  weather = (
-    f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
-  )
-  return FunctionOutput(weather=weather)
+    weather = (
+        f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
+    )
+    return FunctionOutput(weather=weather)
 
 
 function = Function(
-  function=get_current_weather,
-  description="Get the current weather in a given location.",
+    function=get_current_weather,
+    description="Get the current weather in a given location.",
 )
 ```
 
@@ -150,7 +150,11 @@ response = sageai.chat(
     model="gpt-3.5-turbo-0613",
     top_n=5,
 )
-# The weather in Boston, MA is currently 22 degrees Celsius.
+# {
+#   'name': 'get_current_weather', 
+#   'args': {'location': 'Boston, MA'}, 
+#   'result': {'weather': 'The weather in Boston, MA is currently 22 degrees Celsius.'}
+# }
 ```
 
 ## API
@@ -178,7 +182,15 @@ The method handles fetches similar functions from the vector database, calls Ope
 
 **Returns**:
 
-- The function result.
+- A dict containing the function name, arguments, and result.
+
+```python
+dict(
+    name="function_name",
+    args={"arg1": "value1", "arg2": "value2"},
+    result={"out1": "value1", "out2": "value2"},
+)
+```
 
 #### `get_top_n_functions`
 
