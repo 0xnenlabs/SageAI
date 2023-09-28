@@ -66,7 +66,15 @@ class SageAI:
         function_name = openai_result["function_call"]["name"]
         function_args = json.loads(openai_result["function_call"]["arguments"])
         function_response = self.run_function(name=function_name, args=function_args)
-        return dict(name=function_name, args=function_args, result=function_response)
+
+        base_return = dict(name=function_name, args=function_args)
+
+        if "error" in function_response:
+            base_return["error"] = function_response["error"]
+        else:
+            base_return["result"] = function_response["result"]
+
+        return base_return
 
     def get_top_n_functions(self, *, query: str, top_n: int):
         return self.vectordb.search_impl(query=query, top_n=top_n)
