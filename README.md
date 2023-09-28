@@ -17,8 +17,8 @@
 
 - Organization through file-centric functions, organized in directories.
 - Strong typing for functions using Pydantic.
-- Built-in in-memory FAISS vector database, with the option to integrate your own.
-- Easily test each function with an associated test.json file, supporting both unit and integration tests.
+- Built-in in-memory Qdrant vector database, with the option to integrate your own.
+- Easily test each function with an associated `test.json` file, supporting both unit and integration tests.
 - Built with CI/CD in mind, ensuring synchronicity between your vector db and the functions directory across all
   environments.
 - Lightweight implementation with only three dependencies: `openai`, `pydantic`, and `qdrant-client`.
@@ -42,7 +42,7 @@ $ pip install sageai
 $ poetry add sageai
 ```
 
-## Functions Directory
+## Design
 
 SageAI is built around the concept of a `functions` directory, which contains all of your functions. Each function is
 defined in a Python file `function.py`, and is associated with an optional `test.json` file for testing.
@@ -58,17 +58,28 @@ defined outside the `function.py` file, and imported into the file.
 Below is a minimal example of a function that returns the current weather in a given location.
 
 ```python
-# function.py
+# functions/get_current_weather/function.py
+from enum import Enum
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 from sageai.types.function import Function
 
 
+class UnitTypes(str, Enum):
+    CELSIUS = "Celsius"
+    FAHRENHEIT = "Fahrenheit"
+
+
 class FunctionInput(BaseModel):
     location: str = Field(
         ...,
-        # Required, will be used in the request to OpenAI
         description="The city and state, e.g. San Francisco, CA."
+    )
+    unit: Optional[UnitTypes] = Field(
+        UnitTypes.CELSIUS,
+        description="The unit of temperature."
     )
 
 
@@ -77,20 +88,15 @@ class FunctionOutput(BaseModel):
 
 
 def get_current_weather(params: FunctionInput) -> FunctionOutput:
-    weather = (
-        f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
-    )
+    weather = f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
     return FunctionOutput(weather=weather)
 
 
 function = Function(
     function=get_current_weather,
-    # Required, will be used in the request to OpenAI
     description="Get the current weather in a given location.",
 )
 ```
-
-As for the `test.json` file,
 
 ## Setup
 
@@ -101,57 +107,178 @@ Then initialize `SageAI`.
 ```python
 from sageai import SageAI, Message
 
-sageai = SageAI(openai_key="")
+sage = SageAI(openai_key="")
 ```
 
 Then index the vector database.
 
 ```python
-sageai.index()
+sage.index()
 ```
 
 That's it! Just start chatting 🚀
 
 ```python
 message = "What's the weather like in Boston right now?"
-response = sageai.chat(
+response = sage.chat(
     messages=[Message(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
-    sageai=dict(k=5),
+    top_n=5,
 )
 # The weather in Boston, MA is currently 22 degrees Celsius.
 ```
 
-## Documentation
+## API
 
-### SageAI.__init__()
+### SageAI Setup
 
-Pass
+To instantiate the `SageAI` class, you need:
 
-### SageAI.index()
+- **openai_key**: The API key for OpenAI.
+- **functions_directory** (optional): Directory containing functions.
+- **vectordb** (optional): An implementation of the `AbstractVectorDB` for vector database operations.
+- **log_level** (optional): Desired log level for the operations.
 
-Pass
+### SageAI Methods
 
-### SageAI.chat()
+#### `chat`
 
-Pass
+Initiate a chat using OpenAI's API and the provided parameters.
+The method handles fetches similar functions from the vector database, calls OpenAI and runs appropriate function.
+
+**Parameters**:
+
+- Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create)
+- **top_n** (required): The number of top functions to consider from the vector database.
+
+**Returns**:
+
+- The function result.
+
+#### `get_top_n_functions`
+
+Get the top `n` functions from the vector database based on a query.
+
+**Parameters**:
+
+- **query**: The user's message to search against.
+- **top_n**: Number of top functions to return.
+
+**Returns**:
+
+- List of top `n` functions.
+
+**Returns**:
+
+- A dict of function names to `Function` definitions.
+
+#### `run_function`
+
+Execute a function based on its name and provided arguments.
+
+**Parameters**:
+
+- **name**: Name of the function.
+- **args**: Arguments to pass to the function.
+
+**Returns**:
+
+- The function result.
+
+#### `index`
+
+Index the vector database based on the functions directory. 
+This method is useful to update the vectordb when new functions are added or existing ones are updated.
+
+## Testing
+
+As for the optional `test.json` file in each function, follow this structure:
+
+```json
+# functions/get_current_weather/test.json
+[
+  {
+    "message": "What's the weather like in Boston right now?",
+    "input": {
+      "location": "Boston",
+      "unit": "Celsius"
+    },
+    "output": {
+      "weather": "The weather in Boston, MA is currently 22 degrees Celsius."
+    }
+  },
+  ...      
+]
+```
+
+- Each object in the array represents a test case.
+- The `message` field is the natural language message that will be sent
+  to ChatGPT, and the `input` field is the expected input that will be passed to the function.
+- The `output` field is the
+  expected output of the function.
+
+SageAI offers unit and integration tests.
+
+### Unit Tests
+
+- Unit tests are used to ensure your functions directory is valid, and it tests the function in isolation.
+- It tests whether:
+    - the `functions` directory exists,
+    - each function has a `function.py` file,
+    - each `function.py` file has a `Function` object
+    - and more!
+- It also tests whether the input and output types are valid, and whether the function returns the expected output based
+  on
+  the input alone by calling `func(test_case["input"]) == test_case["output"]`.
+
+> Note that this does not call the vector database nor ChatGPT, and **WILL NOT** cost you money.
+
+### Integration Tests
+
+- Integration tests are used to test the function by calling ChatGPT and the vector database.
+- They test whether the vector database is able to retrieve the function, and whether ChatGPT can call the function
+  with the given input and return the expected output.
+
+> Note this will call the vector database and ChatGPT, and **WILL** cost you money.
+
+### CLI
+
+```bash
+# To run unit and integration tests for all functions:
+poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key
+
+# To run unit tests only for all functions:
+poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --unit
+
+# To run integration tests only for all functions:
+poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --integration
+
+# To run unit and integration tests for a specific function:
+poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --function=get_current_weather
+
+# To run unit tests only for a specific function:
+poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --function=get_current_weather --unit
+
+# To run integration tests only for a specific function:
+poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --function=get_current_weather --integration
+```
+
+Note that `--directory` defaults to `./functions`, and `--apikey` defaults to the `OPENAI_API_KEY` environment variable.
 
 ## Examples
 
-- [basic](/examples/1-basic)
-- [advanced](/examples/2-advanced)
-
-## Limitations
+1. [Basic](/examples/1-basic)
+2. [Advanced](/examples/2-advanced)
 
 ## Roadmap
 
-- Add tests and code coverage
-- Support streaming
-- Support asyncio
-- Add debug flag for logger
-- Support Pydantic V2
-- Write Chainlit example
-- Write fullstack example
+- [ ] Add tests and code coverage
+- [ ] Support multiple function calls
+- [ ] Support streaming
+- [ ] Support asyncio
+- [ ] Support Pydantic V2
+- [ ] Write Chainlit example
+- [ ] Write fullstack example
 
 ## Contributing
 

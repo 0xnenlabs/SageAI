@@ -39,27 +39,25 @@ class SageAI:
         merged = {i: v for i, v in enumerate(args)}
         merged.update(kwargs)
 
-        sageai_dict = {key: merged[key] for key in ["sageai"] if key in merged}
-        sageai_dict = sageai_dict["sageai"] if "sageai" in sageai_dict else {}
-        openai_dict = {key: merged[key] for key in merged if key != "sageai"}
+        top_n = merged.pop('top_n') if 'top_n' in merged else None
 
-        if openai_dict.get("model") is None:
+        if merged.get("model") is None:
             raise Exception("No model provided.")
 
-        if openai_dict.get("messages") is None:
+        if merged.get("messages") is None:
             raise Exception("No messages provided.")
 
-        if sageai_dict.get("k") is None:
-            raise Exception("No k provided.")
+        if top_n is None:
+            raise Exception("No top_n provided.")
 
-        latest_user_message = get_latest_user_message(openai_dict.get("messages"))
+        latest_user_message = get_latest_user_message(merged.get("messages"))
         if latest_user_message is None:
             raise Exception("No user message found.")
 
         top_functions = self.get_top_n_functions(
-            query=latest_user_message["content"], k=sageai_dict.get("k")
+            query=latest_user_message["content"], top_n=top_n
         )
-        openai_result = self.openai.chat(**openai_dict, functions=top_functions)
+        openai_result = self.openai.chat(**merged, functions=top_functions)
 
         if "function_call" not in openai_result:
             raise Exception("No function call found in OpenAI response.")
@@ -69,8 +67,8 @@ class SageAI:
         function_response = self.run_function(name=func_name, args=func_args)
         return function_response
 
-    def get_top_n_functions(self, *, query: str, k: int):
-        return self.vectordb.search_impl(query=query, k=k)
+    def get_top_n_functions(self, *, query: str, top_n: int):
+        return self.vectordb.search_impl(query=query, top_n=top_n)
 
     @staticmethod
     def run_function(*, name: str, args: Dict[str, Any]):

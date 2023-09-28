@@ -1,8 +1,10 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
 class Message(BaseModel):
     role: str
     content: str
-    name: str
-    function_call: str
+    name: Optional[str] = None
+    function_call: Optional[str] = None

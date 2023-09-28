@@ -1,14 +1,12 @@
 import json
 import os
 from typing import cast, get_type_hints
+
 import pytest
+
 from sageai.types.function import Function
 from sageai.types.log_level import LogLevel
-
-from sageai.utils.file_utilities import (
-    get_functions_directories,
-    load_module_from_file,
-)
+from sageai.utils.file_utilities import get_functions_directories, load_module_from_file
 from sageai.utils.logger import get_logger
 
 logger = get_logger(LogLevel.INFO)

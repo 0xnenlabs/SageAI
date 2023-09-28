@@ -6,7 +6,7 @@
       "unit": "Celsius"
     },
     "output": {
-      "weather": "The weather in Boston is currently 22 degrees Celsius."
+      "weather": "The weather in Boston, MA is currently 22 degrees Celsius."
     }
   },
   {
@@ -16,7 +16,7 @@
       "unit": "Fahrenheit"
     },
     "output": {
-      "weather": "The weather in New York is currently 22 degrees Fahrenheit."
+      "weather": "The weather in New York, NY is currently 22 degrees Fahrenheit."
     }
   }
 ]

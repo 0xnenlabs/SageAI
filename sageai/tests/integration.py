@@ -3,7 +3,6 @@ import os
 from time import sleep
 
 import pytest
-
 from lasso_sennin.common.types.lasso.Metadata import Query, SenninMetadata, User
 from lasso_sennin.sennin.sennin import Sennin
 from lasso_sennin.utils.file_utilities import (

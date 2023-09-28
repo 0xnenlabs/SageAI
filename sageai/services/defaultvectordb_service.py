@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import List
 
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import models
@@ -43,7 +43,7 @@ class DefaultVectorDBService(AbstractVectorDB):
             records=records,
         )
 
-    def search(self, query: str, k: int) -> List[str]:
+    def search(self, *, query: str, top_n: int) -> List[str]:
         query_embedding = self.openai.create_embeddings(
             model="text-embedding-ada-002",
             input=query,
@@ -51,7 +51,7 @@ class DefaultVectorDBService(AbstractVectorDB):
         hits = self.client.search(
             collection_name=self.collection,
             query_vector=query_embedding,
-            limit=k,
+            limit=top_n,
         )
         func_names = [hit.payload["func_name"] for hit in hits]
         return func_names

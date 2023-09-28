@@ -1,17 +1,17 @@
-from sageai import SageAI, Message
+from sageai import Message, SageAI
 
 # Init on startup
-sageai = SageAI(openai_key="")
+sage = SageAI(openai_key="")
 
 # In a CI/CD pipeline or in dev mode on startup/hot reload
-sageai.index()
+sage.index()
 
 # Anywhere in the codebase
 message = "What's the weather like in Boston right now?"
-response = sageai.chat(
+response = sage.chat(
     messages=[Message(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
-    sageai=dict(k=5),
+    top_n=5,
 )
 
 print(f"Message: {message}")
