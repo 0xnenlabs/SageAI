@@ -1,6 +1,6 @@
 import inspect
-import os
 import json
+import os
 
 
 def get_user_package_path():
