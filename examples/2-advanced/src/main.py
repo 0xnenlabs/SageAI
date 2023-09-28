@@ -24,7 +24,7 @@ print(f"Response: {response}")
 message = "Give me a number between 1 and 10."
 print(f"\nMessage: {message}")
 response = sage.chat(
-    messages=[Message(role="user", content=message)],
+    messages=[dict(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
     top_n=5,
 )
