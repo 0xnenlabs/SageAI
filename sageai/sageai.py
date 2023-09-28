@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List, Optional, Tuple, Type
+from typing import Any, Dict, Optional, Tuple, Type
 
 from sageai.config import LogLevel, get_config, get_function_map, set_config
 from sageai.services.openai_service import OpenAIService
@@ -77,7 +77,7 @@ class SageAI:
         return self.vectordb.search_impl(query=query, top_n=top_n)
 
     def call_openai(
-        self, openai_args: dict[str, any], top_functions: List[str]
+        self, openai_args: Dict[str, Any], top_functions: list[Dict[str, Any]]
     ) -> Tuple[str, Dict[str, Any]]:
         openai_result = self.openai.chat(**openai_args, functions=top_functions)
 

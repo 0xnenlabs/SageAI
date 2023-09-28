@@ -208,6 +208,8 @@ dict(
 
 > Either `result` or `error` will be present in the response, but not both.
 
+***
+
 #### 2. `get_top_n_functions`
 
 Get the top `n` functions from the vector database based on a query.
@@ -222,6 +224,8 @@ Get the top `n` functions from the vector database based on a query.
 **Returns**:
 
 - A dict of function names to `Function` definitions.
+
+***
 
 #### 3. `run_function`
 
@@ -238,10 +242,38 @@ Execute a function based on its name and provided arguments.
 
 - The function result as a dict.
 
-#### 4. `index`
+***
+
+#### 4. `call_openai`
+
+Calls the OpenAI API with the provided parameters.
+
+**Parameters**:
+
+| Parameter         | Description                                                                                                         | Defaults   |
+|-------------------|---------------------------------------------------------------------------------------------------------------------|------------|
+| **openai_args**   | Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create) | *Required* |
+| **top_functions** | List of dicts that is a representation of your functions.                                                           | *Required* |
+
+**Returns**:
+
+- A tuple of the function name and the function args.
+
+***
+
+#### 5. `index`
 
 Index the vector database based on the functions directory.
 This method is useful to update the vectordb when new functions are added or existing ones are updated.
+
+***
+
+Want more control?
+
+> The `chat` function uses `get_top_n_functions`, `run_function`, and `call_openai` internally.
+> However, we also expose these methods incase you wish to use them directly to implement your own `chat` logic.
+
+***
 
 ### Vector DB
 
