@@ -12,7 +12,7 @@ sage = SageAI(
 sage.index()
 
 # Anywhere in the codebase
-message = "What's the weather like in Boston right now?"
+message = "What's the weather like in Toronto right now?"
 print(f"Message: {message}")
 response = sage.chat(
     messages=[dict(role="user", content=message)],

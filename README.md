@@ -153,7 +153,7 @@ sage.index()
 That's it! You're now set up and ready to interact with SageAI through natural language queries. 🚀
 
 ```python
-message = "What's the weather like in Boston right now?"
+message = "What's the weather like in Toronto right now?"
 response = sageai.chat(
     messages=[dict(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
@@ -161,8 +161,8 @@ response = sageai.chat(
 )
 # {
 #   'name': 'get_current_weather', 
-#   'args': {'location': 'Boston, MA'}, 
-#   'result': {'weather': 'The weather in Boston, MA is currently 22 degrees Celsius.'}
+#   'args': {'location': 'Toronto'}, 
+#   'result': {'weather': 'The weather in Toronto is currently 22 degrees Celsius.'}
 # }
 ```
 
@@ -241,13 +241,13 @@ As for the optional `test.json` file in each function, follow this structure:
 ```json
 [
   {
-    "message": "What's the weather like in Boston right now?",
+    "message": "What's the weather like in Toronto right now?",
     "input": {
-      "location": "Boston",
+      "location": "Toronto",
       "unit": "Celsius"
     },
     "output": {
-      "weather": "The weather in Boston, MA is currently 22 degrees Celsius."
+      "weather": "The weather in Toronto is currently 22 degrees Celsius."
     }
   }
 ]

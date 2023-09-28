@@ -1,12 +1,12 @@
 [
   {
-    "message": "What's the weather like in Boston, MA right now?",
+    "message": "What's the weather like in Toronto right now?",
     "input": {
-      "location": "Boston",
+      "location": "Toronto",
       "unit": "Celsius"
     },
     "output": {
-      "weather": "The weather in Boston, MA is currently 22 degrees Celsius."
+      "weather": "The weather in Toronto is currently 22 degrees Celsius."
     }
   },
   {

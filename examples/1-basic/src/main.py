@@ -7,7 +7,7 @@ sage = SageAI(openai_key="")
 sage.index()
 
 # Anywhere in the codebase
-message = "What's the weather like in Boston right now?"
+message = "What's the weather like in Toronto right now?"
 response = sage.chat(
     messages=[dict(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
