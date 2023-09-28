@@ -1,0 +1,12 @@
+[
+  {
+    "message": "What's the weather forecast in Boston tomorrow?",
+    "input": {
+      "location": "Boston, MA",
+      "unit": "Celsius"
+    },
+    "output": {
+      "weather": "The weather tomorrow in Boston, MA is going to be 22 degrees."
+    }
+  }
+]

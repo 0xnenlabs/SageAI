@@ -15,7 +15,9 @@ class FunctionOutput(BaseModel):
 
 
 def get_forecast_weather(params: FunctionInput) -> FunctionOutput:
-    forecast = f"The weather {params.forecast} in {params.location} is going to be 22 degrees Celsius."
+    forecast = (
+        f"The weather {params.forecast} in {params.location} is going to be 22 degrees."
+    )
     return FunctionOutput(forecast=forecast)
 
 
