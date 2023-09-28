@@ -7,8 +7,8 @@ from sageai.types.function import Function
 
 
 class UnitTypes(str, Enum):
-    CELSIUS = "celsius"
-    FAHRENHEIT = "fahrenheit"
+    CELSIUS = "Celsius"
+    FAHRENHEIT = "Fahrenheit"
 
 
 class FunctionInput(BaseModel):
