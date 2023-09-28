@@ -316,7 +316,7 @@ In the case above, we only care about the `weather` field, and not the `temperat
 the `weather` field in the `__eq__` method.
 
 This is especially useful when you are returning an object from a database, for example, and you only care to test
-against a subset of the fields.
+against a subset of the fields (for example, the `id` field).
 
 ### CLI
 
