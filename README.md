@@ -45,11 +45,10 @@ and allows you to call them with natural language.
 - Easily test each function with an associated `test.json` file, supporting both unit and integration tests.
 - Built with CI/CD in mind, ensuring synchronicity between your vector db and the functions directory across all
   environments using the `index` method.
-- Lightweight implementation with only the following dependencies:
+- Lightweight implementation with only three dependencies:
     - `openai`
     - `pydantic`
     - `qdrant-client`
-    - `pytest`
 
 ## Requirements
 
