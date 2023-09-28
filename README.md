@@ -21,12 +21,12 @@
 - [Design](#design)
 - [Setup](#setup)
 - [API](#api)
-  - [SageAI Setup](#sageai-setup)
-  - [SageAI Methods](#sageai-methods)
+    - [SageAI Setup](#sageai-setup)
+    - [SageAI Methods](#sageai-methods)
 - [Testing](#testing)
-  - [Unit Tests](#unit-tests)
-  - [Integration Tests](#integration-tests)
-  - [CLI](#cli)
+    - [Unit Tests](#unit-tests)
+    - [Integration Tests](#integration-tests)
+    - [CLI](#cli)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -86,35 +86,42 @@ from sageai.types.function import Function
 
 
 class UnitTypes(str, Enum):
-    CELSIUS = "Celsius"
-    FAHRENHEIT = "Fahrenheit"
+  CELSIUS = "Celsius"
+  FAHRENHEIT = "Fahrenheit"
 
 
 class FunctionInput(BaseModel):
-    location: str = Field(
-        ...,
-        description="The city and state, e.g. San Francisco, CA."
-    )
-    unit: Optional[UnitTypes] = Field(
-        UnitTypes.CELSIUS,
-        description="The unit of temperature."
-    )
+  location: str = Field(
+    ..., description="The city and state, e.g. San Francisco, CA."
+  )
+  unit: Optional[UnitTypes] = Field(
+    UnitTypes.CELSIUS, description="The unit of temperature."
+  )
 
 
 class FunctionOutput(BaseModel):
-    weather: str
+  weather: str
+
+  def __eq__(self, other):
+    if not isinstance(other, FunctionOutput):
+      return False
+    return self.weather == other.weather
 
 
 def get_current_weather(params: FunctionInput) -> FunctionOutput:
-    weather = f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
-    return FunctionOutput(weather=weather)
+  weather = (
+    f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
+  )
+  return FunctionOutput(weather=weather)
 
 
 function = Function(
-    function=get_current_weather,
-    description="Get the current weather in a given location.",
+  function=get_current_weather,
+  description="Get the current weather in a given location.",
 )
 ```
+
+We'll break down the above example into its components below.
 
 ## Setup
 
@@ -235,10 +242,10 @@ SageAI offers unit and integration tests.
 
 - Unit tests are used to ensure your functions directory is valid, and it tests the function in isolation.
 - It tests whether:
-  - the `functions` directory exists,
-  - each function has a `function.py` file,
-  - each `function.py` file has a `Function` object
-  - and more!
+    - the `functions` directory exists,
+    - each function has a `function.py` file,
+    - each `function.py` file has a `Function` object
+    - and more!
 - It also tests whether the input and output types are valid, and whether the function returns the expected output based
   on
   the input alone by calling `func(test_case["input"]) == test_case["output"]`.
@@ -272,7 +279,13 @@ To run tests for a specific function, simply give it the path to the function di
 poetry run sageai-tests --directory=path/to/functions/get_current_weather --apikey=openapi-key
 ```
 
-> Note that `--directory` defaults to `./functions`, and `--apikey` defaults to the `OPENAI_API_KEY` environment variable.
+> Note that `--directory` defaults to `./functions`, and `--apikey` defaults to the `OPENAI_API_KEY` environment
+> variable.
+
+A note on integration tests:
+
+> Because of the non-deterministic nature of ChatGPT, integration tests may return different results each time.
+> It's important to use integration tests as a sanity check, and not as a definitive test.
 
 ## Examples
 

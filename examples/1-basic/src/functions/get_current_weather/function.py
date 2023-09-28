@@ -23,6 +23,11 @@ class FunctionInput(BaseModel):
 class FunctionOutput(BaseModel):
     weather: str
 
+    def __eq__(self, other):
+        if not isinstance(other, FunctionOutput):
+            return False
+        return self.weather == other.weather
+
 
 def get_current_weather(params: FunctionInput) -> FunctionOutput:
     weather = (
