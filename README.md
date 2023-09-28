@@ -118,7 +118,7 @@ function = Function(
 
 ## Setup
 
-Create a `functions` directory in the root directory, and add your functions as described in the section above.
+Create a `functions` directory in the root directory, and add your functions as described in [Design](#design).
 
 Then initialize `SageAI`.
 
@@ -251,7 +251,7 @@ SageAI offers unit and integration tests.
 - They test whether the vector database is able to retrieve the function, and whether ChatGPT can call the function
   with the given input and return the expected output.
 
-> Note this will call the vector database and ChatGPT, and **WILL** cost you money.
+> Note that this will call the vector database and ChatGPT, and **WILL** cost you money.
 
 ### CLI
 
@@ -272,7 +272,7 @@ To run tests for a specific function, simply give it the path to the function di
 poetry run sageai-tests --directory=path/to/functions/get_current_weather --apikey=openapi-key
 ```
 
-Note that `--directory` defaults to `./functions`, and `--apikey` defaults to the `OPENAI_API_KEY` environment variable.
+> Note that `--directory` defaults to `./functions`, and `--apikey` defaults to the `OPENAI_API_KEY` environment variable.
 
 ## Examples
 
