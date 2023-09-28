@@ -72,7 +72,7 @@ class SageAI:
         if "error" in function_response:
             base_return["error"] = function_response["error"]
         else:
-            base_return["result"] = function_response["result"]
+            base_return["result"] = function_response
 
         return base_return
 
