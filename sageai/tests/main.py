@@ -21,7 +21,11 @@ def main():
     if args.apikey:
         os.environ["OPENAI_KEY"] = args.apikey
 
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+
     if not args.integration or args.unit:
-        pytest.main(["-x", "-s", "sageai/tests/unit.py"])
+        unit_test_path = os.path.join(current_directory, "unit.py")
+        pytest.main(["-x", "-s", unit_test_path])
     if not args.unit or args.integration:
-        pytest.main(["-x", "-s", "sageai/tests/integration.py"])
+        integration_test_path = os.path.join(current_directory, "integration.py")
+        pytest.main(["-x", "-s", integration_test_path])

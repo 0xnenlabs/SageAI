@@ -1,6 +1,6 @@
 [
   {
-    "message": "What's the weather like in Boston right now?",
+    "message": "What's the weather like in Boston, MA right now?",
     "input": {
       "location": "Boston",
       "unit": "Celsius"
@@ -10,9 +10,9 @@
     }
   },
   {
-    "message": "What's the temperature in New York right now in Fahrenheit?",
+    "message": "What's the temperature in New York, NY right now in Fahrenheit?",
     "input": {
-      "location": "New York",
+      "location": "New York, NY",
       "unit": "Fahrenheit"
     },
     "output": {

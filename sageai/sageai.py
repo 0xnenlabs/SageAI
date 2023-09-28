@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, Optional, Type
+from typing import Any, Dict, List, Optional, Type
 
 from sageai.config import LogLevel, get_config, get_function_map, set_config
 from sageai.services.openai_service import OpenAIService
@@ -35,6 +35,9 @@ class SageAI:
         self.openai = OpenAIService()
         self.vectordb = self.config.vectordb()
 
+    def index(self):
+        self.vectordb.index()
+
     def chat(self, *args, **kwargs) -> Dict[str, Any]:
         merged = {i: v for i, v in enumerate(args)}
         merged.update(kwargs)
@@ -57,19 +60,23 @@ class SageAI:
         top_functions = self.get_top_n_functions(
             query=latest_user_message["content"], top_n=top_n
         )
+        function_name, function_args = self.call_openai(merged, top_functions)
+        function_response = self.run_function(name=function_name, args=function_args)
 
-        openai_result = self.openai.chat(**merged, functions=top_functions)
+        return dict(name=function_name, args=function_args, result=function_response)
+
+    def get_top_n_functions(self, *, query: str, top_n: int):
+        return self.vectordb.search_impl(query=query, top_n=top_n)
+
+    def call_openai(self, openai_args: dict[str, any], top_functions: List[str]):
+        openai_result = self.openai.chat(**openai_args, functions=top_functions)
 
         if "function_call" not in openai_result:
             raise Exception("No function call found in OpenAI response.")
 
         function_name = openai_result["function_call"]["name"]
         function_args = json.loads(openai_result["function_call"]["arguments"])
-        function_response = self.run_function(name=function_name, args=function_args)
-        return dict(name=function_name, args=function_args, result=function_response)
-
-    def get_top_n_functions(self, *, query: str, top_n: int):
-        return self.vectordb.search_impl(query=query, top_n=top_n)
+        return function_name, function_args
 
     @staticmethod
     def run_function(*, name: str, args: Dict[str, Any]):
@@ -79,6 +86,3 @@ class SageAI:
         func_args = function_input_type(**args)
         func_result = func(func_args)
         return func_result.dict()
-
-    def index(self):
-        self.vectordb.index()

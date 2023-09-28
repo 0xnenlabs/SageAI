@@ -45,27 +45,28 @@ def test_integration(dirpath):
                 )
                 result = None
                 try:
-                    results = sageai.chat(
+                    vector_db_result = sageai.vectordb.search(
+                        query=test_case["message"], top_n=5
+                    )
+                    result = sageai.chat(
                         messages=[dict(role="user", content=test_case["message"])],
                         model="gpt-3.5-turbo-0613",
-                        sageai=dict(k=5),
+                        top_n=5,
                     )
-                    if results is None:
+                    if result is None:
                         raise Exception("No result returned from Sennin")
 
-                    print("results: ", results)
-                    test_output = output_data_model_class(**test_case["output"])
-                    print("test_output: ", test_output)
+                    test_output = output_data_model_class(**test_case["output"]).dict()
 
                     try:
                         assert (
-                            function_module.function.name in result.potential_functions
+                            function_module.function.name in vector_db_result
                         ), "VectorDB did not return expected function"
                         assert (
-                            result.function.name == function_module.function.name
+                            result["name"] == function_module.function.name
                         ), "Wrong function chosen by model"
                         assert (
-                            result.result.data == test_output
+                            result["result"] == test_output
                         ), "Expected output does not match actual output"
                     except AssertionError as e:
                         logger.exception(

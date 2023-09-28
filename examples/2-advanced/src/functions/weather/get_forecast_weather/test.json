@@ -1,6 +1,6 @@
 [
   {
-    "message": "What's the weather forecast in Boston tomorrow?",
+    "message": "What's the weather forecast in Boston, MA tomorrow?",
     "input": {
       "location": "Boston, MA",
       "unit": "Celsius"
