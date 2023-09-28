@@ -13,6 +13,28 @@
 </a>
 </p>
 
+## Table of Contents
+
+- [Key Features](#key-features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Design](#design)
+- [Setup](#setup)
+- [API](#api)
+    * [SageAI Setup](#sageai-setup)
+    * [SageAI Methods](#sageai-methods)
+        + [`chat`](#-chat-)
+        + [`get_top_n_functions`](#-get-top-n-functions-)
+        + [`run_function`](#-run-function-)
+        + [`index`](#-index-)
+- [Testing](#testing)
+    * [Unit Tests](#unit-tests)
+    * [Integration Tests](#integration-tests)
+    * [CLI](#cli)
+- [Examples](#examples)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+
 ## Key Features
 
 - Organization through folder-centric functions, organized in directories.

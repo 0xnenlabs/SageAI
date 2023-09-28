@@ -1,7 +1,7 @@
 from sageai import SageAI
 
 # Init on startup
-sage = SageAI(openai_key="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")
+sage = SageAI(openai_key="")
 
 # In a CI/CD pipeline or in dev mode on startup/hot reload
 sage.index()
