@@ -12,9 +12,7 @@ class UnitTypes(str, Enum):
 
 
 class FunctionInput(BaseModel):
-    location: str = Field(
-        ..., description="The city, e.g. San Francisco"
-    )
+    location: str = Field(..., description="The city, e.g. San Francisco")
     unit: Optional[UnitTypes] = Field(
         UnitTypes.CELSIUS, description="The unit of temperature."
     )

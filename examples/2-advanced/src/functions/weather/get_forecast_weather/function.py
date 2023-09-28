@@ -4,9 +4,7 @@ from sageai.types.function import Function
 
 
 class FunctionInput(BaseModel):
-    location: str = Field(
-        ..., description="The city, e.g. San Francisco"
-    )
+    location: str = Field(..., description="The city, e.g. San Francisco")
     forecast: str = Field(..., description="The forecast, e.g. today, tomorrow.")
 
 
