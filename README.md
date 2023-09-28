@@ -105,7 +105,7 @@ Create a `functions` directory in the root directory, and add your functions as 
 Then initialize `SageAI`.
 
 ```python
-from sageai import SageAI, Message
+from sageai import SageAI
 
 sage = SageAI(openai_key="")
 ```
@@ -120,8 +120,8 @@ That's it! Just start chatting 🚀
 
 ```python
 message = "What's the weather like in Boston right now?"
-response = sage.chat(
-    messages=[Message(role="user", content=message)],
+response = sageai.chat(
+    messages=[dict(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
     top_n=5,
 )
@@ -187,7 +187,7 @@ Execute a function based on its name and provided arguments.
 
 #### `index`
 
-Index the vector database based on the functions directory. 
+Index the vector database based on the functions directory.
 This method is useful to update the vectordb when new functions are added or existing ones are updated.
 
 ## Testing
@@ -207,7 +207,7 @@ As for the optional `test.json` file in each function, follow this structure:
       "weather": "The weather in Boston, MA is currently 22 degrees Celsius."
     }
   },
-  ...      
+  ...
 ]
 ```
 
@@ -223,10 +223,10 @@ SageAI offers unit and integration tests.
 
 - Unit tests are used to ensure your functions directory is valid, and it tests the function in isolation.
 - It tests whether:
-    - the `functions` directory exists,
-    - each function has a `function.py` file,
-    - each `function.py` file has a `Function` object
-    - and more!
+  - the `functions` directory exists,
+  - each function has a `function.py` file,
+  - each `function.py` file has a `Function` object
+  - and more!
 - It also tests whether the input and output types are valid, and whether the function returns the expected output based
   on
   the input alone by calling `func(test_case["input"]) == test_case["output"]`.
