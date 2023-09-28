@@ -182,15 +182,18 @@ The method handles fetches similar functions from the vector database, calls Ope
 
 **Returns**:
 
-- A dict containing the function name, arguments, and result.
+- A dict containing the function name, arguments, result, and error.
 
 ```python
 dict(
     name="function_name",
     args={"arg1": "value1", "arg2": "value2"},
-    result={"out1": "value1", "out2": "value2"},
+    result={"out1": "value1", "out2": "value2"},  # Optional
+    error="",  # Optional
 )
 ```
+
+Either `result` or `error` will be present in the response, but not both.
 
 #### `get_top_n_functions`
 
