@@ -332,22 +332,22 @@ against a subset of the fields (for example, the `id` field).
 
 ```bash
 # To run unit and integration tests for all functions:
-poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions
+poetry run sageai-tests --apikey=openapikey --directory=path/to/functions
 
 # To run unit tests only for all functions:
-poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions --unit
+poetry run sageai-tests --apikey=openapikey --directory=path/to/functions --unit
 
 # To run integration tests only for all functions:
-poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions --integration
+poetry run sageai-tests --apikey=openapikey --directory=path/to/functions --integration
 
 # To run unit and integration tests for a specific function:
-poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions/get_current_weather
+poetry run sageai-tests --apikey=openapikey --directory=path/to/functions/get_current_weather
 ```
 
 | Parameter       | Description                                                   | Defaults     |
 |-----------------|---------------------------------------------------------------|--------------|
+| **--apikey**    | OpenAI API key.                                               | *Required*   |
 | **--directory** | Directory of the functions or of the specific function to run | */functions* |
-| **--apiKey**    | OpenAI API key.                                               | *Required*   |
 
 ## Examples
 
