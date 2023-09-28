@@ -72,13 +72,16 @@ class SageAI:
         return self.vectordb.search_impl(query=query, top_n=top_n)
 
     @staticmethod
-    def run_function(*, name: str, args: Dict[str, Any]):
-        function_map = get_function_map()
-        func = function_map[name]
-        function_input_type = get_input_parameter_type(func.function)
-        func_args = function_input_type(**args)
-        func_result = func(func_args)
-        return func_result.dict()
+    def run_function(*, name: str, args: Dict[str, Any]) -> Dict[str, Any]:
+        try:
+            function_map = get_function_map()
+            func = function_map[name]
+            function_input_type = get_input_parameter_type(func.function)
+            func_args = function_input_type(**args)
+            func_result = func(func_args)
+            return func_result.dict()
+        except Exception as e:
+            return dict(error=str(e))
 
     def index(self):
         self.vectordb.index()
