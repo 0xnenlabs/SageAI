@@ -13,6 +13,9 @@
 </a>
 </p>
 
+SageAI is a tool that lets you connect custom Python functions to ChatGPT. Using folders, it organizes these functions
+and allows you to call them with natural language.
+
 ## Table of Contents
 
 - [Key Features](#key-features)
@@ -21,13 +24,13 @@
 - [Design](#design)
 - [Setup](#setup)
 - [API](#api)
-    * [SageAI Setup](#sageai-setup)
-    * [SageAI Methods](#sageai-methods)
+  * [SageAI Initialize](#sageai-initialize)
+  * [SageAI Methods](#sageai-methods)
 - [Testing](#testing)
-    * [Unit Tests](#unit-tests)
-    * [Integration Tests](#integration-tests)
-    * [Output Equality](#output-equality)
-    * [CLI](#cli)
+  * [Unit Tests](#unit-tests)
+  * [Integration Tests](#integration-tests)
+  * [Output Equality](#output-equality)
+  * [CLI](#cli)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -168,18 +171,20 @@ response = sageai.chat(
 
 ## API
 
-### SageAI Setup
+### SageAI Initialize
 
-To instantiate the `SageAI` class, you need:
+The `SageAI` constructor accepts the following parameters:
 
-- **openai_key**: The API key for OpenAI.
-- **functions_directory** (optional): Directory containing functions.
-- **vectordb** (optional): An implementation of the `AbstractVectorDB` for vector database operations.
-- **log_level** (optional): Desired log level for the operations.
+| Parameter               | Description                                                                 | Defaults                 |
+|-------------------------|-----------------------------------------------------------------------------|--------------------------|
+| **openai_key**          | The API key for OpenAI.                                                     | *Required*               |
+| **functions_directory** | Directory containing functions.                                             | `/functions`             |
+| **vectordb**            | An implementation of the `AbstractVectorDB` for vector database operations. | `DefaultVectorDBService` |
+| **log_level**           | Desired log level for the operations.                                       | `ERROR`                  |
 
 ### SageAI Methods
 
-#### `chat`
+#### 1. `chat`
 
 Initiate a chat using OpenAI's API and the provided parameters.
 
@@ -190,8 +195,6 @@ Initiate a chat using OpenAI's API and the provided parameters.
 
 **Returns**:
 
-- A dict containing the function name, arguments, result, and error.
-
 ```python
 dict(
     name="function_name",
@@ -201,35 +204,39 @@ dict(
 )
 ```
 
-Either `result` or `error` will be present in the response, but not both.
+>Either `result` or `error` will be present in the response, but not both.
 
-#### `get_top_n_functions`
+#### 2. `get_top_n_functions`
 
 Get the top `n` functions from the vector database based on a query.
 
 **Parameters**:
 
-- **query**: The query to search against.
-- **top_n**: The number of functions to return.
+| Parameter | Description                        | Defaults   |
+|-----------|------------------------------------|------------|
+| **query** | The query to search against.       | *Required* |
+| **top_n** | The number of functions to return. | *Required* |
 
 **Returns**:
 
 - A dict of function names to `Function` definitions.
 
-#### `run_function`
+#### 3. `run_function`
 
 Execute a function based on its name and provided arguments.
 
 **Parameters**:
 
-- **name**: Name of the function.
-- **args**: Arguments to pass to the function.
+| Parameter | Description                        | Defaults   |
+|-----------|------------------------------------|------------|
+| **name**  | Name of the function.              | *Required* |
+| **args**  | Arguments to pass to the function. | *Required* |
 
 **Returns**:
 
-- The function result.
+- The function result as a dict.
 
-#### `index`
+#### 4. `index`
 
 Index the vector database based on the functions directory.
 This method is useful to update the vectordb when new functions are added or existing ones are updated.
