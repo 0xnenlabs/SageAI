@@ -1,7 +1,7 @@
 import json
-from typing import Optional, Dict, Any, Type
+from typing import Any, Dict, Optional, Type
 
-from sageai.config import get_config, set_config, LogLevel, get_function_map
+from sageai.config import LogLevel, get_config, get_function_map, set_config
 from sageai.services.openai_service import OpenAIService
 from sageai.types.abstract_vectordb import AbstractVectorDB
 from sageai.utils.inspection_utilities import get_input_parameter_type
@@ -70,7 +70,7 @@ class SageAI:
         return function_response
 
     def get_top_n_functions(self, *, query: str, k: int):
-        return self.vectordb.search(query=query, k=k)
+        return self.vectordb.search_impl(query=query, k=k)
 
     @staticmethod
     def run_function(*, name: str, args: Dict[str, Any]):

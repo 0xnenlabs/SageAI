@@ -1,6 +1,6 @@
 from typing import Optional, Type
 
-from pydantic import BaseModel, ValidationError, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from sageai.services.defaultvectordb_service import DefaultVectorDBService
 from sageai.types.abstract_vectordb import AbstractVectorDB

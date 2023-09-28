@@ -1,4 +1,4 @@
-from examples.advanced.src.vectordb import CustomVectorDB
+from examples.advanced.src.customvectordb import CustomVectorDB
 from sageai import SageAI
 
 # Init on startup
@@ -12,21 +12,28 @@ sageai.index()
 
 # Anywhere in the codebase
 message = "What's the weather like in Boston right now?"
+print(f"Message: {message}")
 response = sageai.chat(
     messages=[dict(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
     sageai=dict(k=5),
 )
-
-print(f"Message: {message}")
 print(f"Response: {response}")
 
 message = "Give me a number between 1 and 10."
+print(f"\nMessage: {message}")
 response = sageai.chat(
     messages=[dict(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
     sageai=dict(k=5),
 )
+print(f"Response: {response}")
 
+message = "What's the weather tomorrow in Toronto?"
 print(f"\nMessage: {message}")
+response = sageai.chat(
+    messages=[dict(role="user", content=message)],
+    model="gpt-3.5-turbo-0613",
+    sageai=dict(k=5),
+)
 print(f"Response: {response}")

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Any, Dict, List
 
 
 class AbstractVectorDB(ABC):
@@ -8,28 +8,25 @@ class AbstractVectorDB(ABC):
 
         self.function_map = get_function_map()
 
-    def format_search_result(self, function_names: List[str]):
-        potential_functions = [
-            self.function_map[func_name].parameters for func_name in function_names
-        ]
-        return potential_functions
-
     @abstractmethod
     def index(self) -> None:
         """Indexes the vector db based on the functions directory."""
         pass
 
     @abstractmethod
-    def embed(self, *, query: str):
-        """Embeds a query."""
+    def search(self, *, query: str, k: int) -> List[str]:
+        """Actual search logic, which should be implemented in derived classes.
+        It should return a list of function names
+        """
         pass
 
-    @abstractmethod
-    def format_query(self, *, query: str) -> str:
-        """Formats a query for embedding."""
-        pass
+    def format_search_result(self, function_names: List[str]) -> List[Dict[str, Any]]:
+        potential_functions = [
+            self.function_map[func_name].parameters for func_name in function_names
+        ]
+        return potential_functions
 
-    @abstractmethod
-    def search(self, *, query: str, n: int) -> List[str]:
+    def search_impl(self, *, query: str, k: int) -> List[Dict[str, Any]]:
         """Search vector db based on a query and return top n function names."""
-        pass
+        results = self.search(query=query, k=k)
+        return self.format_search_result(results)

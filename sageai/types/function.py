@@ -4,12 +4,12 @@ from pydantic import BaseModel
 
 from sageai.utils.inspection_utilities import get_input_parameter_type
 from sageai.utils.model_utilities import (
-    is_enum_array,
+    get_array_item_type,
     get_enum_array_values,
-    is_enum,
     get_possible_values,
     is_array,
-    get_array_item_type,
+    is_enum,
+    is_enum_array,
     is_optional,
 )
 

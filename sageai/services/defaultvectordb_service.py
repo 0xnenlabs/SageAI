@@ -26,8 +26,7 @@ class DefaultVectorDBService(AbstractVectorDB):
         )
 
         def format_func_embedding(func: Function) -> str:
-            embedding_text = func.name.replace("_", " ") + " - " + func.description
-            return self.format_query(query=embedding_text)
+            return func.name.replace("_", " ") + " - " + func.description
 
         records = [
             models.Record(
@@ -44,23 +43,15 @@ class DefaultVectorDBService(AbstractVectorDB):
             records=records,
         )
 
-    def embed(self, query: str):
-        return self.openai.create_embeddings(
+    def search(self, query: str, k: int) -> List[str]:
+        query_embedding = self.openai.create_embeddings(
             model="text-embedding-ada-002",
             input=query,
         )
-
-    def format_query(self, *, query: str):
-        return query.lower()
-
-    def search(self, query: str, k: int) -> List[Dict[str, Any]]:
-        formatted_query = self.format_query(query=query)
-        query_embedding = self.embed(query=formatted_query)
         hits = self.client.search(
             collection_name=self.collection,
             query_vector=query_embedding,
             limit=k,
         )
         func_names = [hit.payload["func_name"] for hit in hits]
-
-        return self.format_search_result(function_names=func_names)
+        return func_names

@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict, List
 
 
 def get_latest_user_message(messages: List[Dict]) -> Dict | None:
