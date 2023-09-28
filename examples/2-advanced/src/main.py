@@ -1,5 +1,5 @@
-from examples.advanced.src.customvectordb import CustomVectorDB
 from sageai import SageAI
+from .customvectordb import CustomVectorDB
 
 # Init on startup
 sageai = SageAI(

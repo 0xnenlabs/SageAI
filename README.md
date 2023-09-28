@@ -99,7 +99,7 @@ Create a `functions` directory in the root directory, and add your functions as 
 Then initialize `SageAI`.
 
 ```python
-from sageai import SageAI
+from sageai import SageAI, Message
 
 sageai = SageAI(openai_key="")
 ```
@@ -115,7 +115,7 @@ That's it! Just start chatting 🚀
 ```python
 message = "What's the weather like in Boston right now?"
 response = sageai.chat(
-    messages=[dict(role="user", content=message)],
+    messages=[Message(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
     sageai=dict(k=5),
 )

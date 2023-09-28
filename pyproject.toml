@@ -2,7 +2,7 @@
 name = "sageai"
 version = "1.0.0"
 description = "File-based functions for ChatGPT's function calling with Pydantic support"
-authors = ["JUNIORCO <sami@lasso.gg>", "Samanimkr <Samanimkr@outlook.com>"]
+authors = ["JUNIORCO <sami@lasso.gg>", "SamaniMK <samani@lasso.gg>"]
 license = "MIT"
 readme = "README.md"
 keywords = ["python", "openai", "functions", "chatgpt", "gpt4", "genai", "function-calling"]
@@ -16,6 +16,10 @@ qdrant-client = ">=1.4.0"
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
 isort = "^5.12.0"
+pytest = "^7.4.2"
+
+[tool.poetry.scripts]
+sageai-tests = "sageai.tests.main:main"
 
 [tool.isort]
 profile = "black"

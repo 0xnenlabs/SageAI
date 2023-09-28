@@ -6,7 +6,7 @@ from sageai.services.defaultvectordb_service import DefaultVectorDBService
 from sageai.types.abstract_vectordb import AbstractVectorDB
 from sageai.types.log_level import LogLevel
 from sageai.utils.format_config_args import format_config_args
-from sageai.utils.generate_functions_map import generate_functions_map
+from sageai.utils.file_utilities import generate_functions_map
 
 
 class Config(BaseModel):
