@@ -157,7 +157,7 @@ That's it! You're now set up and ready to interact with SageAI through natural l
 
 ```python
 message = "What's the weather like in Toronto right now?"
-response = sageai.chat(
+response = sage.chat(
     messages=[dict(role="user", content=message)],
     model="gpt-3.5-turbo-0613",
     top_n=5,
