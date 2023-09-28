@@ -66,13 +66,13 @@ class SageAI:
         function_name = openai_result["function_call"]["name"]
         function_args = json.loads(openai_result["function_call"]["arguments"])
         function_response = self.run_function(name=function_name, args=function_args)
-        # return function_response, function_name, function_args
-        return {
-            "result": function_response,
-            "vectordb_result": top_functions,
-            "openai_function_name": function_name,
-            "openai_function_args": function_args,
-        }
+        return function_response, function_name, function_args
+        # return {
+        #     "result": function_response,
+        #     "vectordb_result": top_functions,
+        #     "openai_function_name": function_name,
+        #     "openai_function_args": function_args,
+        # }
 
     def get_top_n_functions(self, *, query: str, top_n: int):
         return self.vectordb.search_impl(query=query, top_n=top_n)
