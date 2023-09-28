@@ -39,7 +39,7 @@ class SageAI:
         merged = {i: v for i, v in enumerate(args)}
         merged.update(kwargs)
 
-        top_n = merged.pop('top_n') if 'top_n' in merged else None
+        top_n = merged.pop("top_n") if "top_n" in merged else None
 
         if merged.get("model") is None:
             raise Exception("No model provided.")
@@ -57,6 +57,7 @@ class SageAI:
         top_functions = self.get_top_n_functions(
             query=latest_user_message["content"], top_n=top_n
         )
+
         openai_result = self.openai.chat(**merged, functions=top_functions)
 
         if "function_call" not in openai_result:
@@ -82,7 +83,8 @@ class SageAI:
         func = function_map[name]
         function_input_type = get_input_parameter_type(func.function)
         func_args = function_input_type(**args)
-        return func(func_args)
+        func_result = func(func_args)
+        return func_result.dict()
 
     def index(self):
         self.vectordb.index()

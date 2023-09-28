@@ -1,7 +1,7 @@
 ![Logo](https://github.com/0xnenlabs/SageAI/assets/45445790/750fb3f9-0830-4948-9a86-61e59d933b45)
 
 <p align="center">
-    <em>File-based functions for ChatGPT's function calling with Pydantic support 🚀</em>
+    <em>Folder-based functions for ChatGPT's function calling with Pydantic support 🚀</em>
 </p>
 
 <p align="center">
@@ -13,9 +13,27 @@
 </a>
 </p>
 
+## Table of Contents
+
+- [Key Features](#key-features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Design](#design)
+- [Setup](#setup)
+- [API](#api)
+  - [SageAI Setup](#sageai-setup)
+  - [SageAI Methods](#sageai-methods)
+- [Testing](#testing)
+  - [Unit Tests](#unit-tests)
+  - [Integration Tests](#integration-tests)
+  - [CLI](#cli)
+- [Examples](#examples)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+
 ## Key Features
 
-- Organization through file-centric functions, organized in directories.
+- Organization through folder-centric functions, organized in directories.
 - Strong typing for functions using Pydantic.
 - Built-in in-memory Qdrant vector database, with the option to integrate your own.
 - Easily test each function with an associated `test.json` file, supporting both unit and integration tests.
@@ -166,10 +184,6 @@ Get the top `n` functions from the vector database based on a query.
 
 **Returns**:
 
-- List of top `n` functions.
-
-**Returns**:
-
 - A dict of function names to `Function` definitions.
 
 #### `run_function`
@@ -195,7 +209,6 @@ This method is useful to update the vectordb when new functions are added or exi
 As for the optional `test.json` file in each function, follow this structure:
 
 ```json
-# functions/get_current_weather/test.json
 [
   {
     "message": "What's the weather like in Boston right now?",
@@ -206,8 +219,7 @@ As for the optional `test.json` file in each function, follow this structure:
     "output": {
       "weather": "The weather in Boston, MA is currently 22 degrees Celsius."
     }
-  },
-  ...
+  }
 ]
 ```
 
@@ -252,15 +264,12 @@ poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --uni
 
 # To run integration tests only for all functions:
 poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --integration
+```
 
-# To run unit and integration tests for a specific function:
-poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --function=get_current_weather
+To run tests for a specific function, simply give it the path to the function directory:
 
-# To run unit tests only for a specific function:
-poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --function=get_current_weather --unit
-
-# To run integration tests only for a specific function:
-poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --function=get_current_weather --integration
+```bash
+poetry run sageai-tests --directory=path/to/functions/get_current_weather --apikey=openapi-key
 ```
 
 Note that `--directory` defaults to `./functions`, and `--apikey` defaults to the `OPENAI_API_KEY` environment variable.

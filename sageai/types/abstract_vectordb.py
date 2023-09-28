@@ -20,7 +20,9 @@ class AbstractVectorDB(ABC):
         """
         pass
 
-    def format_search_result(self, *, function_names: List[str]) -> List[Dict[str, Any]]:
+    def format_search_result(
+        self, *, function_names: List[str]
+    ) -> List[Dict[str, Any]]:
         potential_functions = [
             self.function_map[func_name].parameters for func_name in function_names
         ]
@@ -29,4 +31,4 @@ class AbstractVectorDB(ABC):
     def search_impl(self, *, query: str, top_n: int) -> List[Dict[str, Any]]:
         """Search vector db based on a query and return top n function names."""
         results = self.search(query=query, top_n=top_n)
-        return self.format_search_result(results)
+        return self.format_search_result(function_names=results)
