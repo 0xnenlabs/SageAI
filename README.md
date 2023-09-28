@@ -24,13 +24,13 @@ and allows you to call them with natural language.
 - [Design](#design)
 - [Setup](#setup)
 - [API](#api)
-  * [SageAI Initialize](#sageai-initialize)
-  * [SageAI Methods](#sageai-methods)
+    * [SageAI Initialize](#sageai-initialize)
+    * [SageAI Methods](#sageai-methods)
 - [Testing](#testing)
-  * [Unit Tests](#unit-tests)
-  * [Integration Tests](#integration-tests)
-  * [Output Equality](#output-equality)
-  * [CLI](#cli)
+    * [Unit Tests](#unit-tests)
+    * [Integration Tests](#integration-tests)
+    * [Output Equality](#output-equality)
+    * [CLI](#cli)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -190,8 +190,10 @@ Initiate a chat using OpenAI's API and the provided parameters.
 
 **Parameters**:
 
-- Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create)
-- **top_n** (required): The number of top functions to consider from the vector database.
+| Parameter | Description                                                                                                         | Defaults   |
+|-----------|---------------------------------------------------------------------------------------------------------------------|------------|
+| -         | Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create) | -          |
+| **top_n** | The number of top functions to consider from the vector database.                                                   | *Required* |
 
 **Returns**:
 
@@ -204,7 +206,7 @@ dict(
 )
 ```
 
->Either `result` or `error` will be present in the response, but not both.
+> Either `result` or `error` will be present in the response, but not both.
 
 #### 2. `get_top_n_functions`
 
