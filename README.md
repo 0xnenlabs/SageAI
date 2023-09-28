@@ -23,6 +23,7 @@ and allows you to call them with natural language.
 - [Installation](#installation)
 - [Design](#design)
 - [Setup](#setup)
+- [Convention](#convention)
 - [API](#api)
     * [SageAI Initialize](#sageai-initialize)
     * [SageAI Methods](#sageai-methods)
@@ -167,6 +168,30 @@ response = sage.chat(
 #   'args': {'location': 'Toronto'}, 
 #   'result': {'weather': 'The weather in Toronto is currently 22 degrees Celsius.'}
 # }
+```
+
+## Convention
+
+SageAI follows a convention over configuration approach to make it easy to define functions.
+
+Ensure that your `function.py` file contains the following:
+
+1. A `function` object that is an instance of `Function`.
+2. A function that is the actual function that will be called by ChatGPT.
+3. The function **must** have typed input and output Pydantic models.
+4. Each field in the input model **must** have a description.
+
+Minimal example:
+
+```python
+def my_function(params: PydanticInput) -> PydanticOutput:
+    return PydanticOutput(...)
+
+
+function = Function(
+    function=my_function,
+    description="My function description.",
+)
 ```
 
 ## API
