@@ -25,7 +25,7 @@ def main():
 
     if not args.integration or args.unit:
         unit_test_path = os.path.join(current_directory, "unit.py")
-        pytest.main(["-x", "-s", unit_test_path])
+        pytest.main(["-x", "-s", unit_test_path, "--disable-warnings"])
     if not args.unit or args.integration:
         integration_test_path = os.path.join(current_directory, "integration.py")
-        pytest.main(["-x", "-s", integration_test_path])
+        pytest.main(["-x", "-s", integration_test_path, "--disable-warnings"])

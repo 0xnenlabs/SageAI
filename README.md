@@ -21,24 +21,25 @@
 - [Design](#design)
 - [Setup](#setup)
 - [API](#api)
-    - [SageAI Setup](#sageai-setup)
-    - [SageAI Methods](#sageai-methods)
+  * [SageAI Setup](#sageai-setup)
+  * [SageAI Methods](#sageai-methods)
 - [Testing](#testing)
-    - [Unit Tests](#unit-tests)
-    - [Integration Tests](#integration-tests)
-    - [CLI](#cli)
+  * [Unit Tests](#unit-tests)
+  * [Integration Tests](#integration-tests)
+  * [Output Equality](#output-equality)
+  * [CLI](#cli)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 
 ## Key Features
 
-- Organization through folder-centric functions, organized in directories.
+- Function organization through folder-centric functions.
 - Strong typing for functions using Pydantic.
-- Built-in in-memory Qdrant vector database, with the option to integrate your own.
+- Built-in in-memory Qdrant vector database for function storage and retrieval, with the option to integrate your own.
 - Easily test each function with an associated `test.json` file, supporting both unit and integration tests.
 - Built with CI/CD in mind, ensuring synchronicity between your vector db and the functions directory across all
-  environments.
+  environments using the `index` method.
 - Lightweight implementation with only four dependencies: `openai`, `pydantic`, `qdrant-client`, and `pytest`.
 
 ## Requirements
@@ -201,8 +202,8 @@ Get the top `n` functions from the vector database based on a query.
 
 **Parameters**:
 
-- **query**: The user's message to search against.
-- **top_n**: Number of top functions to return.
+- **query**: The query to search against.
+- **top_n**: The number of functions to return.
 
 **Returns**:
 
@@ -274,6 +275,28 @@ SageAI offers unit and integration tests.
   with the given input and return the expected output.
 
 > Note that this will call the vector database and ChatGPT, and **WILL** cost you money.
+
+### Output Equality
+
+We let you determine equality between the expected output and the actual output by overriding the
+`__eq__` method in the output model.
+
+```python
+class FunctionOutput(BaseModel):
+    weather: str
+    temperature: int
+
+    def __eq__(self, other):
+        if not isinstance(other, FunctionOutput):
+            return False
+        return self.weather == other.weather
+```
+
+In the case above, we only care about the `weather` field, and not the `temperature` field. Therefore, we only compare
+the `weather` field in the `__eq__` method.
+
+This is especially useful when you are returning an object from a database, for example, and you only care to test
+against a subset of the fields.
 
 ### CLI
 
