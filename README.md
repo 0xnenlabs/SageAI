@@ -21,13 +21,13 @@
 - [Design](#design)
 - [Setup](#setup)
 - [API](#api)
-  * [SageAI Setup](#sageai-setup)
-  * [SageAI Methods](#sageai-methods)
+    * [SageAI Setup](#sageai-setup)
+    * [SageAI Methods](#sageai-methods)
 - [Testing](#testing)
-  * [Unit Tests](#unit-tests)
-  * [Integration Tests](#integration-tests)
-  * [Output Equality](#output-equality)
-  * [CLI](#cli)
+    * [Unit Tests](#unit-tests)
+    * [Integration Tests](#integration-tests)
+    * [Output Equality](#output-equality)
+    * [CLI](#cli)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -36,11 +36,16 @@
 
 - Function organization through folder-centric functions.
 - Strong typing for functions using Pydantic.
-- Built-in in-memory Qdrant vector database for function storage and retrieval, with the option to integrate your own.
+- Built-in Qdrant vector database with in-memory support for function storage and retrieval, with the option to
+  integrate your own.
 - Easily test each function with an associated `test.json` file, supporting both unit and integration tests.
 - Built with CI/CD in mind, ensuring synchronicity between your vector db and the functions directory across all
   environments using the `index` method.
-- Lightweight implementation with only four dependencies: `openai`, `pydantic`, `qdrant-client`, and `pytest`.
+- Lightweight implementation with only the following dependencies:
+    - `openai`
+    - `pydantic`
+    - `qdrant-client`
+    - `pytest`
 
 ## Requirements
 
@@ -76,7 +81,8 @@ The format of the `function.py` file must contain two things in order for SageAI
 Input and output types may be defined using Pydantic models, and are automatically validated by SageAI. They can also be
 defined outside the `function.py` file, and imported into the file.
 
-Below is a minimal example of a function that returns the current weather in a given location.
+Here is a simplified example of how SageAI might handle a function that fetches the current weather for a given
+location.
 
 ```python
 # functions/get_current_weather/function.py
@@ -144,7 +150,7 @@ Then index the vector database.
 sage.index()
 ```
 
-That's it! Just start chatting 🚀
+That's it! You're now set up and ready to interact with SageAI through natural language queries. 🚀
 
 ```python
 message = "What's the weather like in Boston right now?"
@@ -176,7 +182,6 @@ To instantiate the `SageAI` class, you need:
 #### `chat`
 
 Initiate a chat using OpenAI's API and the provided parameters.
-The method handles fetches similar functions from the vector database, calls OpenAI and runs appropriate function.
 
 **Parameters**:
 
@@ -260,15 +265,15 @@ SageAI offers unit and integration tests.
 
 - Unit tests are used to ensure your functions directory is valid, and it tests the function in isolation.
 - It tests whether:
-    - the `functions` directory exists,
-    - each function has a `function.py` file,
-    - each `function.py` file has a `Function` object
+    - the `functions` directory exists.
+    - each function has a `function.py` file.
+    - each `function.py` file has a `Function` object.
     - and more!
 - It also tests whether the input and output types are valid, and whether the function returns the expected output based
   on
   the input alone by calling `func(test_case["input"]) == test_case["output"]`.
 
-> Note that this does not call the vector database nor ChatGPT, and **WILL NOT** cost you money.
+> Unit tests do not call the vector database nor ChatGPT, and **will not** cost you money.
 
 ### Integration Tests
 
@@ -276,12 +281,12 @@ SageAI offers unit and integration tests.
 - They test whether the vector database is able to retrieve the function, and whether ChatGPT can call the function
   with the given input and return the expected output.
 
-> Note that this will call the vector database and ChatGPT, and **WILL** cost you money.
+> Integration tests will call the vector database and ChatGPT, and **will** cost you money.
 
 ### Output Equality
 
-We let you determine equality between the expected output and the actual output by overriding the
-`__eq__` method in the output model.
+You can customize how to determine equality between the expected and actual output by overriding the `__eq__`
+method in the output model.
 
 ```python
 class FunctionOutput(BaseModel):
@@ -313,7 +318,7 @@ poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --uni
 poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --integration
 ```
 
-To run tests for a specific function, simply give it the path to the function directory:
+To run tests for a specific function, provide the path to that function's directory:
 
 ```bash
 poetry run sageai-tests --directory=path/to/functions/get_current_weather --apikey=openapi-key
@@ -324,13 +329,13 @@ poetry run sageai-tests --directory=path/to/functions/get_current_weather --apik
 
 A note on integration tests:
 
-> Because of the non-deterministic nature of ChatGPT, integration tests may return different results each time.
+> Because ChatGPT's responses can vary, integration tests may return different results each time.
 > It's important to use integration tests as a sanity check, and not as a definitive test.
 
 ## Examples
 
-1. [Basic](/examples/1-basic)
-2. [Advanced](/examples/2-advanced)
+1. [Basic](/examples/1-basic) - Get started with a simple SageAI function.
+2. [Advanced](/examples/2-advanced) - Dive deeper with more intricate functionalities and use-cases.
 
 ## Roadmap
 
@@ -344,4 +349,5 @@ A note on integration tests:
 
 ## Contributing
 
-Please see our [CONTRIBUTING.md](/CONTRIBUTING.md).
+Interested in contributing to SageAI? Please see our [CONTRIBUTING.md](/CONTRIBUTING.md) for guidelines, coding
+standards, and other details.
