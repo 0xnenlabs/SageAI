@@ -63,6 +63,8 @@ $ poetry add sageai
 
 ## Design
 
+![image](https://github.com/0xnenlabs/SageAI/assets/45445790/251451b4-4de6-4eb0-99f2-d1fc1fdaeb29)
+
 SageAI is built around the concept of a `functions` directory, which contains all of your functions. Each function is
 defined in a Python file `function.py`, and is associated with an optional `test.json` file for testing.
 
