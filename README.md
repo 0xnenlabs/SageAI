@@ -26,6 +26,7 @@ and allows you to call them with natural language.
 - [API](#api)
     * [SageAI Initialize](#sageai-initialize)
     * [SageAI Methods](#sageai-methods)
+    * [Vector DB](#vector-db)
 - [Testing](#testing)
     * [Unit Tests](#unit-tests)
     * [Integration Tests](#integration-tests)
@@ -242,6 +243,15 @@ Execute a function based on its name and provided arguments.
 
 Index the vector database based on the functions directory.
 This method is useful to update the vectordb when new functions are added or existing ones are updated.
+
+### Vector DB
+
+SageAI comes with a built-in in-memory vector database, Qdrant, which is used to store and retrieve functions.
+
+If you wish to use your own vector database, you can implement the `AbstractVectorDB` class and pass it into the
+`SageAI` constructor.
+
+See the [advanced example](/examples/2-advanced) for an example of how to integrate your own vector database.
 
 ## Testing
 
