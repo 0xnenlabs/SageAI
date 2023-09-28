@@ -33,6 +33,7 @@ def get_current_weather(params: FunctionInput) -> FunctionOutput:
     weather = (
         f"The weather in {params.location} is currently 22 degrees {params.unit.value}."
     )
+
     return FunctionOutput(weather=weather)
 
 

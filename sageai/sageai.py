@@ -63,7 +63,16 @@ class SageAI:
         function_name, function_args = self.call_openai(merged, top_functions)
         function_response = self.run_function(name=function_name, args=function_args)
 
-        return dict(name=function_name, args=function_args, result=function_response)
+        function_response = self.run_function(name=function_name, args=function_args)
+
+        base_return = dict(name=function_name, args=function_args)
+
+        if "error" in function_response:
+            base_return["error"] = function_response["error"]
+        else:
+            base_return["result"] = function_response
+
+        return base_return
 
     def get_top_n_functions(self, *, query: str, top_n: int):
         return self.vectordb.search_impl(query=query, top_n=top_n)
@@ -79,10 +88,13 @@ class SageAI:
         return function_name, function_args
 
     @staticmethod
-    def run_function(*, name: str, args: Dict[str, Any]):
-        function_map = get_function_map()
-        func = function_map[name]
-        function_input_type = get_input_parameter_type(func.function)
-        func_args = function_input_type(**args)
-        func_result = func(func_args)
-        return func_result.dict()
+    def run_function(*, name: str, args: Dict[str, Any]) -> Dict[str, Any]:
+        try:
+            function_map = get_function_map()
+            func = function_map[name]
+            function_input_type = get_input_parameter_type(func.function)
+            func_args = function_input_type(**args)
+            func_result = func(func_args)
+            return func_result.dict()
+        except Exception as e:
+            return dict(error=str(e))
