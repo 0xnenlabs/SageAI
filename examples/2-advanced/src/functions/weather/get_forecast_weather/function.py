@@ -1,21 +1,15 @@
-from pydantic import BaseModel, Field
-
 from sageai.types.function import Function
+from types import FunctionInput, FunctionOutput
 
 
-class FunctionInput(BaseModel):
-    location: str = Field(..., description="The city, e.g. San Francisco")
-    forecast: str = Field(..., description="The forecast, e.g. today, tomorrow.")
-
-
-class FunctionOutput(BaseModel):
-    forecast: str
+def some_helper(params: FunctionInput) -> str:
+    return (
+        f"The weather {params.forecast} in {params.location} is going to be 22 degrees."
+    )
 
 
 def get_forecast_weather(params: FunctionInput) -> FunctionOutput:
-    forecast = (
-        f"The weather {params.forecast} in {params.location} is going to be 22 degrees."
-    )
+    forecast = some_helper(params)
     return FunctionOutput(forecast=forecast)
 
 
