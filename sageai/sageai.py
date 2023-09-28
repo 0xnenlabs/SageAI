@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Tuple, Type
 
 from sageai.config import LogLevel, get_config, get_function_map, set_config
 from sageai.services.openai_service import OpenAIService
@@ -60,9 +60,8 @@ class SageAI:
         top_functions = self.get_top_n_functions(
             query=latest_user_message["content"], top_n=top_n
         )
-        function_name, function_args = self.call_openai(merged, top_functions)
-        function_response = self.run_function(name=function_name, args=function_args)
 
+        function_name, function_args = self.call_openai(merged, top_functions)
         function_response = self.run_function(name=function_name, args=function_args)
 
         base_return = dict(name=function_name, args=function_args)
@@ -77,7 +76,9 @@ class SageAI:
     def get_top_n_functions(self, *, query: str, top_n: int):
         return self.vectordb.search_impl(query=query, top_n=top_n)
 
-    def call_openai(self, openai_args: dict[str, any], top_functions: List[str]):
+    def call_openai(
+        self, openai_args: dict[str, any], top_functions: List[str]
+    ) -> Tuple[str, Dict[str, Any]]:
         openai_result = self.openai.chat(**openai_args, functions=top_functions)
 
         if "function_call" not in openai_result:
