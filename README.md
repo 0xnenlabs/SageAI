@@ -104,7 +104,7 @@ class UnitTypes(str, Enum):
 
 class FunctionInput(BaseModel):
     location: str = Field(
-        ..., description="The city and state, e.g. San Francisco, CA."
+        ..., description="The city, e.g. San Francisco"
     )
     unit: Optional[UnitTypes] = Field(
         UnitTypes.CELSIUS, description="The unit of temperature."
@@ -272,6 +272,8 @@ SageAI offers unit and integration tests.
 
 ### Unit Tests
 
+> Unit tests do not call the vector database nor ChatGPT, and **will not** cost you money.
+
 - Unit tests are used to ensure your functions directory is valid, and it tests the function in isolation.
 - It tests whether:
     - the `functions` directory exists.
@@ -282,15 +284,17 @@ SageAI offers unit and integration tests.
   on
   the input alone by calling `func(test_case["input"]) == test_case["output"]`.
 
-> Unit tests do not call the vector database nor ChatGPT, and **will not** cost you money.
-
 ### Integration Tests
+
+> Integration tests will call the vector database and ChatGPT, and **will** cost you money.
 
 - Integration tests are used to test the function by calling ChatGPT and the vector database.
 - They test whether the vector database is able to retrieve the function, and whether ChatGPT can call the function
   with the given input and return the expected output.
 
-> Integration tests will call the vector database and ChatGPT, and **will** cost you money.
+> Because ChatGPT's responses can vary, integration tests may return different results each time.
+> It's important to use integration tests as a tool to ensure ChatGPT is able to call the right function with the right
+> input, and not as a definitive test to measure the test rate of your functions.
 
 ### Output Equality
 
@@ -318,28 +322,22 @@ against a subset of the fields.
 
 ```bash
 # To run unit and integration tests for all functions:
-poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key
+poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions
 
 # To run unit tests only for all functions:
-poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --unit
+poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions --unit
 
 # To run integration tests only for all functions:
-poetry run sageai-tests --directory=path/to/functions --apikey=openapi-key --integration
+poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions --integration
+
+# To run unit and integration tests for a specific function:
+poetry run sageai-tests --apikey=openapi-key --directory=path/to/functions/get_current_weather
 ```
 
-To run tests for a specific function, provide the path to that function's directory:
-
-```bash
-poetry run sageai-tests --directory=path/to/functions/get_current_weather --apikey=openapi-key
-```
-
-> Note that `--directory` defaults to `./functions`, and `--apikey` defaults to the `OPENAI_API_KEY` environment
-> variable.
-
-A note on integration tests:
-
-> Because ChatGPT's responses can vary, integration tests may return different results each time.
-> It's important to use integration tests as a sanity check, and not as a definitive test.
+| Parameter       | Description                                                   | Defaults     |
+|-----------------|---------------------------------------------------------------|--------------|
+| **--directory** | Directory of the functions or of the specific function to run | */functions* |
+| **--apiKey**    | OpenAI API key.                                               | *Required*   |
 
 ## Examples
 

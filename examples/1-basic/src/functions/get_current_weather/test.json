@@ -10,13 +10,13 @@
     }
   },
   {
-    "message": "What's the temperature in New York, NY right now in Fahrenheit?",
+    "message": "What's the temperature in New York right now in Fahrenheit?",
     "input": {
       "location": "New York, NY",
       "unit": "Fahrenheit"
     },
     "output": {
-      "weather": "The weather in New York, NY is currently 22 degrees Fahrenheit."
+      "weather": "The weather in New York is currently 22 degrees Fahrenheit."
     }
   }
 ]
