@@ -13,7 +13,7 @@
 </a>
 </p>
 
-SageAI is a tool that lets you connect custom Python functions to ChatGPT. Using folders, it organizes these functions
+SageAI lets you connect custom Python functions to ChatGPT. It organizes these functions in folders
 and allows you to call them with natural language.
 
 ## Table of Contents
