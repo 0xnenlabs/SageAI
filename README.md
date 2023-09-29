@@ -13,8 +13,11 @@
 </a>
 </p>
 
-SageAI lets you connect custom Python functions to ChatGPT. It organizes these functions in folders
+SageAI lets you connect your Python functions to ChatGPT. It organizes these functions in folders
 and allows you to call them with natural language.
+
+SageAI also has a built-in vector database, Qdrant, which is used to store and retrieve functions. This limits the
+number of tokens sent to ChatGPT, making it faster and cheaper to call your functions.
 
 ## Table of Contents
 
