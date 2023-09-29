@@ -1,0 +1,12 @@
+[
+  {
+    "message": "What's the weather forecast in Toronto tomorrow?",
+    "input": {
+      "location": "Toronto",
+      "forecast": "tomorrow"
+    },
+    "output": {
+      "forecast": "The weather tomorrow in Toronto is going to be 22 degrees."
+    }
+  }
+]
