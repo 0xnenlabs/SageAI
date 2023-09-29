@@ -308,7 +308,7 @@ SageAI comes with a built-in in-memory vector database, Qdrant, which is used to
 If you wish to use your own vector database, you can implement the `AbstractVectorDB` class and pass it into the
 `SageAI` constructor.
 
-See the [advanced example](/examples/2-advanced) for an example of how to integrate your own vector database.
+See the [advanced example](/examples/advanced) for an example of how to integrate your own vector database.
 
 ## Testing
 
@@ -418,8 +418,8 @@ poetry run sageai-tests --apikey=openapikey --directory=path/to/functions/get_cu
 
 ## Examples
 
-1. [Basic](/examples/1-basic) - Get started with a simple SageAI function.
-2. [Advanced](/examples/2-advanced) - Dive deeper with more intricate functionalities and use-cases.
+1. [Basic](/examples/basic) - Get started with a simple SageAI function.
+2. [Advanced](/examples/advanced) - Dive deeper with more intricate functionalities and use-cases.
 
 ## Roadmap
 

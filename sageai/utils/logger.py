@@ -1,20 +1,21 @@
 import logging
-
 from sageai.types.log_level import LogLevel
 
 
-def get_logger(log_level: LogLevel):
-    logger = logging.getLogger(__name__)
-    log_level = log_level.value
+def get_logger(logger_name: str, log_level: LogLevel):
+    logger = logging.getLogger(logger_name)
 
-    logger.setLevel(log_level)
+    log_level_value = log_level.value
+    logger.setLevel(log_level_value)
 
     formatter = logging.Formatter("%(asctime)s | [%(levelname)s] %(message)s")
 
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(log_level)
-    console_handler.setFormatter(formatter)
-
-    logger.addHandler(console_handler)
+    if not logger.handlers:
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(log_level_value)
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+    else:
+        logger.handlers[0].setLevel(log_level_value)  # assumes only one handler
 
     return logger

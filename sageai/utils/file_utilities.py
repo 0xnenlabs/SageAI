@@ -7,8 +7,8 @@ from sageai.types.function import Function
 from sageai.utils.logger import get_logger
 
 
-def load_module_from_file(filename: str, filepath: str) -> ModuleType:
-    spec = util.spec_from_file_location(filename, filepath)
+def load_module_from_file(module_name: str, filepath: str) -> ModuleType:
+    spec = util.spec_from_file_location(module_name, filepath)
     module = util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -37,7 +37,7 @@ def generate_functions_map() -> dict[str, Function]:
     config = get_config()
     functions_directory_path = config.functions_directory
     log_level = config.log_level
-    logger = get_logger(log_level)
+    logger = get_logger("Utils", log_level)
     available_functions = {}
 
     logger.info("Generating function map")

@@ -1,5 +1,8 @@
 from sageai.types.function import Function
-from types import FunctionInput, FunctionOutput
+from examples.advanced.src.functions.weather.get_current_weather.types import (
+    FunctionInput,
+    FunctionOutput,
+)
 
 
 def get_current_weather(params: FunctionInput) -> FunctionOutput:

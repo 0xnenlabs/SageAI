@@ -9,7 +9,7 @@ from sageai.types.log_level import LogLevel
 from sageai.utils.file_utilities import get_functions_directories, load_module_from_file
 from sageai.utils.logger import get_logger
 
-logger = get_logger(LogLevel.INFO)
+logger = get_logger("UnitTest", LogLevel.INFO)
 
 
 def assert_function_module_correct(folder_name, function_module):
@@ -50,7 +50,7 @@ def test_unit(dirpath):
         assert os.path.exists(function_file), f"Missing function.py in {folder_name}"
         assert os.path.exists(test_file), f"Missing test.json in {folder_name}"
 
-        function_module = load_module_from_file("function.py", function_file)
+        function_module = load_module_from_file("function", function_file)
         function_to_test = cast(Function, getattr(function_module, "function"))
         assert_function_module_correct(folder_name, function_module)
 
