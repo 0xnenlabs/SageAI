@@ -13,7 +13,8 @@
 </a>
 </p>
 
-SageAI is a framework for ChatGPT's function calling for creating folder-based functions.
+SageAI is a framework for ChatGPT's function calling for creating folder-based functions that is easy to organize and
+scale.
 
 With a built-in vector database used to store and retrieve functions, the number of tokens sent to ChatGPT is
 significantly reduced, making it faster and cheaper to call your functions.
