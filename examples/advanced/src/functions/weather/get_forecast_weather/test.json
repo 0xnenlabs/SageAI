@@ -6,7 +6,7 @@
       "forecast": "tomorrow"
     },
     "output": {
-      "weather": "The weather tomorrow in Toronto is going to be 22 degrees."
+      "forecast": "The weather tomorrow in Toronto is going to be 22 degrees."
     }
   }
 ]

@@ -7,6 +7,8 @@ from sageai.types.abstract_vectordb import AbstractVectorDB
 from sageai.utils.inspection_utilities import get_input_parameter_type
 from sageai.utils.openai_utilities import get_latest_user_message
 
+__all__ = ["SageAI"]
+
 
 class SageAI:
     def __init__(
