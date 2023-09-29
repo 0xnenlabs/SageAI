@@ -25,14 +25,14 @@ and allows you to call them with natural language.
 - [Setup](#setup)
 - [Convention](#convention)
 - [API](#api)
-    * [SageAI Initialize](#sageai-initialize)
-    * [SageAI Methods](#sageai-methods)
-    * [Vector DB](#vector-db)
+  - [SageAI Initialize](#sageai-initialize)
+  - [SageAI Methods](#sageai-methods)
+  - [Vector DB](#vector-db)
 - [Testing](#testing)
-    * [Unit Tests](#unit-tests)
-    * [Integration Tests](#integration-tests)
-    * [Output Equality](#output-equality)
-    * [CLI](#cli)
+  - [Unit Tests](#unit-tests)
+  - [Integration Tests](#integration-tests)
+  - [Output Equality](#output-equality)
+  - [CLI](#cli)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -47,9 +47,9 @@ and allows you to call them with natural language.
 - Built with CI/CD in mind, ensuring synchronicity between your vector db and the functions directory across all
   environments using the `index` method.
 - Lightweight implementation with only three dependencies:
-    - `openai`
-    - `pydantic`
-    - `qdrant-client`
+  - `openai`
+  - `pydantic`
+  - `qdrant-client`
 
 ## Requirements
 
@@ -163,9 +163,10 @@ response = sage.chat(
     model="gpt-3.5-turbo-0613",
     top_n=5,
 )
+# response:
 # {
-#   'name': 'get_current_weather', 
-#   'args': {'location': 'Toronto'}, 
+#   'name': 'get_current_weather',
+#   'args': {'location': 'Toronto'},
 #   'result': {'weather': 'The weather in Toronto is currently 22 degrees Celsius.'}
 # }
 ```
@@ -201,8 +202,8 @@ function = Function(
 The `SageAI` constructor accepts the following parameters:
 
 | Parameter               | Description                                                                 | Defaults                 |
-|-------------------------|-----------------------------------------------------------------------------|--------------------------|
-| **openai_key**          | The API key for OpenAI.                                                     | *Required*               |
+| ----------------------- | --------------------------------------------------------------------------- | ------------------------ |
+| **openai_key**          | The API key for OpenAI.                                                     | _Required_               |
 | **functions_directory** | Directory containing functions.                                             | `/functions`             |
 | **vectordb**            | An implementation of the `AbstractVectorDB` for vector database operations. | `DefaultVectorDBService` |
 | **log_level**           | Desired log level for the operations.                                       | `ERROR`                  |
@@ -216,9 +217,9 @@ Initiate a chat using OpenAI's API and the provided parameters.
 **Parameters**:
 
 | Parameter | Description                                                                                                         | Defaults   |
-|-----------|---------------------------------------------------------------------------------------------------------------------|------------|
+| --------- | ------------------------------------------------------------------------------------------------------------------- | ---------- |
 | -         | Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create) | -          |
-| **top_n** | The number of top functions to consider from the vector database.                                                   | *Required* |
+| **top_n** | The number of top functions to consider from the vector database.                                                   | _Required_ |
 
 **Returns**:
 
@@ -233,7 +234,7 @@ dict(
 
 > Either `result` or `error` will be present in the response, but not both.
 
-***
+---
 
 #### 2. `get_top_n_functions`
 
@@ -242,15 +243,15 @@ Get the top `n` functions from the vector database based on a query.
 **Parameters**:
 
 | Parameter | Description                        | Defaults   |
-|-----------|------------------------------------|------------|
-| **query** | The query to search against.       | *Required* |
-| **top_n** | The number of functions to return. | *Required* |
+| --------- | ---------------------------------- | ---------- |
+| **query** | The query to search against.       | _Required_ |
+| **top_n** | The number of functions to return. | _Required_ |
 
 **Returns**:
 
 - A dict of function names to `Function` definitions.
 
-***
+---
 
 #### 3. `run_function`
 
@@ -259,15 +260,15 @@ Execute a function based on its name and provided arguments.
 **Parameters**:
 
 | Parameter | Description                        | Defaults   |
-|-----------|------------------------------------|------------|
-| **name**  | Name of the function.              | *Required* |
-| **args**  | Arguments to pass to the function. | *Required* |
+| --------- | ---------------------------------- | ---------- |
+| **name**  | Name of the function.              | _Required_ |
+| **args**  | Arguments to pass to the function. | _Required_ |
 
 **Returns**:
 
 - The function result as a dict.
 
-***
+---
 
 #### 4. `call_openai`
 
@@ -276,29 +277,29 @@ Calls the OpenAI API with the provided parameters.
 **Parameters**:
 
 | Parameter         | Description                                                                                                         | Defaults   |
-|-------------------|---------------------------------------------------------------------------------------------------------------------|------------|
-| **openai_args**   | Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create) | *Required* |
-| **top_functions** | List of dicts that is a representation of your functions.                                                           | *Required* |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **openai_args**   | Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create) | _Required_ |
+| **top_functions** | List of dicts that is a representation of your functions.                                                           | _Required_ |
 
 **Returns**:
 
 - A tuple of the function name and the function args.
 
-***
+---
 
 #### 5. `index`
 
 Index the vector database based on the functions directory.
 This method is useful to update the vectordb when new functions are added or existing ones are updated.
 
-***
+---
 
 Want more control?
 
 > The `chat` function uses `get_top_n_functions`, `run_function`, and `call_openai` internally.
 > However, we also expose these methods incase you wish to use them directly to implement your own `chat` logic.
 
-***
+---
 
 ### Vector DB
 
@@ -336,7 +337,7 @@ As for the optional `test.json` file in each function, follow this structure:
 
 SageAI offers unit and integration tests.
 
-***
+---
 
 ### Unit Tests
 
@@ -344,15 +345,15 @@ SageAI offers unit and integration tests.
 
 - Unit tests are used to ensure your functions directory is valid, and it tests the function in isolation.
 - It tests whether:
-    - the `functions` directory exists.
-    - each function has a `function.py` file.
-    - each `function.py` file has a `Function` object.
-    - and more!
+  - the `functions` directory exists.
+  - each function has a `function.py` file.
+  - each `function.py` file has a `Function` object.
+  - and more!
 - It also tests whether the input and output types are valid, and whether the function returns the expected output based
   on
   the input alone by calling `func(test_case["input"]) == test_case["output"]`.
 
-***
+---
 
 ### Integration Tests
 
@@ -366,7 +367,7 @@ SageAI offers unit and integration tests.
 > It's important to use integration tests as a tool to ensure ChatGPT is able to call the right function with the right
 > input, and not as a definitive test to measure the test rate of your functions.
 
-***
+---
 
 ### Output Equality
 
@@ -390,7 +391,7 @@ the `weather` field in the `__eq__` method.
 This is especially useful when you are returning an object from a database, for example, and you only care to test
 against a subset of the fields (for example, the `id` field).
 
-***
+---
 
 ### CLI
 
@@ -408,10 +409,12 @@ poetry run sageai-tests --apikey=openapikey --directory=path/to/functions --inte
 poetry run sageai-tests --apikey=openapikey --directory=path/to/functions/get_current_weather
 ```
 
-| Parameter       | Description                                                   | Defaults     |
-|-----------------|---------------------------------------------------------------|--------------|
-| **--apikey**    | OpenAI API key.                                               | *Required*   |
-| **--directory** | Directory of the functions or of the specific function to run | */functions* |
+| Parameter         | Description                                                   | Defaults     |
+| ----------------- | ------------------------------------------------------------- | ------------ |
+| **--apikey**      | OpenAI API key.                                               | _Required_   |
+| **--directory**   | Directory of the functions or of the specific function to run | _/functions_ |
+| **--unit**        | Only run unit tests                                           | false        |
+| **--integration** | Only run integration tests                                    | false        |
 
 ## Examples
 
