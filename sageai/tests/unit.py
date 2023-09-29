@@ -1,6 +1,7 @@
 import json
 import os
 from typing import cast, get_type_hints
+import pydantic
 
 import pytest
 
@@ -13,25 +14,27 @@ logger = get_logger("UnitTest", LogLevel.INFO)
 
 
 def assert_function_module_correct(folder_name, function_module):
-    assert hasattr(
-        function_module, "function"
-    ), f"{folder_name}/function.py does not export a variable called 'function'"
+    if not hasattr(function_module, "function"):
+        msg = f"{folder_name}/function.py does not export a variable called 'function'"
+        raise ValueError(msg)
 
 
 def assert_test_cases_correct(test_cases, folder_name):
-    for test_case in test_cases:
-        assert isinstance(
-            test_case, dict
-        ), f"Test case in {folder_name}/test.json is not an object"
-        assert (
-            "input" in test_case
-        ), f"Test case in {folder_name}/tests.json does not have an 'input' property"
-        assert (
-            "output" in test_case
-        ), f"Test case in {folder_name}/tests.json does not have an 'output' property"
-        assert "message" in test_case and isinstance(
-            test_case["message"], str
-        ), f"Test case in {folder_name}/tests.json does not have a 'message' property of type string"
+    for idx, test_case in enumerate(test_cases):
+        if not isinstance(test_case, dict):
+            msg = f"Test case #{idx + 1} in {folder_name}/test.json is not an object"
+            raise ValueError(msg)
+
+        missing_properties = [
+            prop for prop in ["input", "output", "message"] if prop not in test_case
+        ]
+        if missing_properties:
+            msg = f"Test case #{idx + 1} in {folder_name}/tests.json missing properties: {', '.join(missing_properties)}"
+            raise ValueError(msg)
+
+        if not isinstance(test_case.get("message", ""), str):
+            msg = f"Test case #{idx + 1} in {folder_name}/tests.json has a 'message' property which is not of type string"
+            raise ValueError(msg)
 
 
 @pytest.mark.parametrize(
@@ -47,8 +50,13 @@ def test_unit(dirpath):
 
     try:
         # Check necessary files
-        assert os.path.exists(function_file), f"Missing function.py in {folder_name}"
-        assert os.path.exists(test_file), f"Missing test.json in {folder_name}"
+        if not os.path.exists(function_file):
+            msg = f"Missing function.py in {folder_name}"
+            raise ValueError(msg)
+
+        if not os.path.exists(test_file):
+            msg = f"Missing test.json in {folder_name}"
+            raise ValueError(msg)
 
         function_module = load_module_from_file("function", function_file)
         function_to_test = cast(Function, getattr(function_module, "function"))
@@ -64,10 +72,27 @@ def test_unit(dirpath):
             for test_case in test_cases:
                 logger.info(f"Running message {test_case['message']}")
                 func_output = function_to_test(input_model_class(**test_case["input"]))
-                test_output = output_data_model_class(**test_case["output"])
-                assert (
-                    func_output == test_output
-                ), "Expected output does not match actual output"
+
+                test_output = None
+                try:
+                    test_output = output_data_model_class(**test_case["output"]).dict()
+                except pydantic.ValidationError as ve:
+                    expected_fields = ", ".join(
+                        get_type_hints(output_data_model_class).keys()
+                    )
+                    actual_fields = test_case["output"]
+                    logger.error(
+                        f"Validation error for function output {function_module.function.name}:\nExpected fields: {expected_fields}\nGot: {actual_fields}.\n{str(ve)}"
+                    )
+                    continue
+
+                if func_output != test_output:
+                    logger.error(
+                        f"Function {folder_name} output mismatch for message '{test_case['message']}':"
+                    )
+                    logger.error(f"Expected: {test_output}")
+                    logger.error(f"Got: {func_output}")
+                    raise AssertionError("Expected output does not match actual output")
 
     except Exception as e:
-        logger.exception(f"Function {folder_name} failed: {str(e)}")
+        logger.error(f"Function {folder_name} failed. Error: {str(e)}")
