@@ -6,17 +6,17 @@
 
 <p align="center">
 <a href="https://pypi.org/project/sageai" target="_blank">
-    <img src="https://img.shields.io/pypi/v/sageai?color=%2334D058&label=pypi%20package" alt="Package version">
+    <img src="https://img.shields.io/pypi/v/sageai?color=%F1DBC1&label=pypi%20package" alt="Package version">
 </a>
 <a href="https://pypi.org/project/sageai" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/sageai.svg?color=%2334D058" alt="Supported Python versions">
+    <img src="https://img.shields.io/pypi/pyversions/sageai.svg?color=%F1DBC1" alt="Supported Python versions">
 </a>
 </p>
 
-SageAI lets you connect your Python functions to ChatGPT. It organizes these functions in folders
-and allows you to call them with natural language.
+SageAI is a framework for ChatGPT's function calling that lets you create functions in folders and allows. 
+It organizes these functions in folders and allows you to call them with natural language.
 
-SageAI also has a built-in vector database, Qdrant, which is used to store and retrieve functions. This limits the
+SageAI also has a built-in vector database which is used to store and retrieve functions. This limits the
 number of tokens sent to ChatGPT, making it faster and cheaper to call your functions.
 
 ## Table of Contents
