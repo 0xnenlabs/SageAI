@@ -13,11 +13,13 @@
 </a>
 </p>
 
-SageAI is a framework for ChatGPT's function calling for creating folder-based functions that is easy to organize and
+SageAI is a framework for GPT 3.5/4 function calling for creating folder-based functions that is easy to organize and
 scale.
 
-With a built-in vector database used to store and retrieve functions, the number of tokens sent to ChatGPT is
+With a built-in vector database used to store and retrieve functions, the number of tokens sent to the model is
 significantly reduced, making it faster and cheaper to call your functions.
+
+Read the blog post for a more in-depth explanation of the motivation behind SageAI [here](https://0xnen.com/blog/sageai).
 
 ## Table of Contents
 
