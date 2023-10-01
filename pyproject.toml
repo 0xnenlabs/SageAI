@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "sageai"
-version = "1.0.0"
-description = "File-based functions for ChatGPT's function calling with Pydantic support"
+version = "1.0.2"
+description = "Folder-based functions for GPT 3.5/4 function calling with Pydantic support"
 authors = ["JUNIORCO <sami@lasso.gg>", "SamaniMK <samani@lasso.gg>"]
 license = "MIT"
 readme = "README.md"
