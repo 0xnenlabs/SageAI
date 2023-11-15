@@ -8,3 +8,8 @@ class FunctionInput(BaseModel):
 
 class FunctionOutput(BaseModel):
     forecast: str
+
+    def __eq__(self, other):
+        if not isinstance(other, FunctionOutput):
+            return False
+        return self.forecast == other.forecast

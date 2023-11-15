@@ -6,15 +6,20 @@
 
 <p align="center">
 <a href="https://pypi.org/project/sageai" target="_blank">
-    <img src="https://img.shields.io/pypi/v/sageai?color=%2334D058&label=pypi%20package" alt="Package version">
+    <img src="https://img.shields.io/pypi/v/sageai?label=pypi%20package" alt="Package version">
 </a>
 <a href="https://pypi.org/project/sageai" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/sageai.svg?color=%2334D058" alt="Supported Python versions">
+    <img src="https://img.shields.io/pypi/pyversions/sageai.svg" alt="Supported Python versions">
 </a>
 </p>
 
-SageAI lets you connect custom Python functions to ChatGPT. It organizes these functions in folders
-and allows you to call them with natural language.
+SageAI is a framework for GPT 3.5/4 function calling for creating folder-based functions that is easy to organize and
+scale.
+
+With a built-in vector database used to store and retrieve functions, the number of tokens sent to the model is
+significantly reduced, making it faster and cheaper to call your functions.
+
+Read the blog post for a more in-depth explanation of the motivation behind SageAI [here](https://0xnen.com/blog/sageai).
 
 ## Table of Contents
 
@@ -25,14 +30,14 @@ and allows you to call them with natural language.
 - [Setup](#setup)
 - [Convention](#convention)
 - [API](#api)
-  - [SageAI Initialize](#sageai-initialize)
-  - [SageAI Methods](#sageai-methods)
-  - [Vector DB](#vector-db)
+    - [SageAI Initialize](#sageai-initialize)
+    - [SageAI Methods](#sageai-methods)
+    - [Vector DB](#vector-db)
 - [Testing](#testing)
-  - [Unit Tests](#unit-tests)
-  - [Integration Tests](#integration-tests)
-  - [Output Equality](#output-equality)
-  - [CLI](#cli)
+    - [Unit Tests](#unit-tests)
+    - [Integration Tests](#integration-tests)
+    - [Output Equality](#output-equality)
+    - [CLI](#cli)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -47,9 +52,9 @@ and allows you to call them with natural language.
 - Built with CI/CD in mind, ensuring synchronicity between your vector db and the functions directory across all
   environments using the `index` method.
 - Lightweight implementation with only three dependencies:
-  - `openai`
-  - `pydantic`
-  - `qdrant-client`
+    - `openai`
+    - `pydantic`
+    - `qdrant-client`
 
 ## Requirements
 
@@ -202,7 +207,7 @@ function = Function(
 The `SageAI` constructor accepts the following parameters:
 
 | Parameter               | Description                                                                 | Defaults                 |
-| ----------------------- | --------------------------------------------------------------------------- | ------------------------ |
+|-------------------------|-----------------------------------------------------------------------------|--------------------------|
 | **openai_key**          | The API key for OpenAI.                                                     | _Required_               |
 | **functions_directory** | Directory containing functions.                                             | `/functions`             |
 | **vectordb**            | An implementation of the `AbstractVectorDB` for vector database operations. | `DefaultVectorDBService` |
@@ -217,7 +222,7 @@ Initiate a chat using OpenAI's API and the provided parameters.
 **Parameters**:
 
 | Parameter | Description                                                                                                         | Defaults   |
-| --------- | ------------------------------------------------------------------------------------------------------------------- | ---------- |
+|-----------|---------------------------------------------------------------------------------------------------------------------|------------|
 | -         | Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create) | -          |
 | **top_n** | The number of top functions to consider from the vector database.                                                   | _Required_ |
 
@@ -243,7 +248,7 @@ Get the top `n` functions from the vector database based on a query.
 **Parameters**:
 
 | Parameter | Description                        | Defaults   |
-| --------- | ---------------------------------- | ---------- |
+|-----------|------------------------------------|------------|
 | **query** | The query to search against.       | _Required_ |
 | **top_n** | The number of functions to return. | _Required_ |
 
@@ -260,7 +265,7 @@ Execute a function based on its name and provided arguments.
 **Parameters**:
 
 | Parameter | Description                        | Defaults   |
-| --------- | ---------------------------------- | ---------- |
+|-----------|------------------------------------|------------|
 | **name**  | Name of the function.              | _Required_ |
 | **args**  | Arguments to pass to the function. | _Required_ |
 
@@ -277,7 +282,7 @@ Calls the OpenAI API with the provided parameters.
 **Parameters**:
 
 | Parameter         | Description                                                                                                         | Defaults   |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------- | ---------- |
+|-------------------|---------------------------------------------------------------------------------------------------------------------|------------|
 | **openai_args**   | Accepts the same parameters as OpenAI's [chat endpoint](https://platform.openai.com/docs/api-reference/chat/create) | _Required_ |
 | **top_functions** | List of dicts that is a representation of your functions.                                                           | _Required_ |
 
@@ -341,14 +346,14 @@ SageAI offers unit and integration tests.
 
 ### Unit Tests
 
-> Unit tests do not call the vector database nor ChatGPT, and **will not** cost you money.
+> Unit tests do not call the vector database nor ChatGPT, and **will not** cost you OpenAI credits.
 
 - Unit tests are used to ensure your functions directory is valid, and it tests the function in isolation.
 - It tests whether:
-  - the `functions` directory exists.
-  - each function has a `function.py` file.
-  - each `function.py` file has a `Function` object.
-  - and more!
+    - the `functions` directory exists.
+    - each function has a `function.py` file.
+    - each `function.py` file has a `Function` object.
+    - and more!
 - It also tests whether the input and output types are valid, and whether the function returns the expected output based
   on
   the input alone by calling `func(test_case["input"]) == test_case["output"]`.
@@ -357,7 +362,7 @@ SageAI offers unit and integration tests.
 
 ### Integration Tests
 
-> Integration tests will call the vector database and ChatGPT, and **will** cost you money.
+> Integration tests will call the vector database and ChatGPT, and **will** cost you OpenAI credits.
 
 - Integration tests are used to test the function by calling ChatGPT and the vector database.
 - They test whether the vector database is able to retrieve the function, and whether ChatGPT can call the function
@@ -410,7 +415,7 @@ poetry run sageai-tests --apikey=openapikey --directory=path/to/functions/get_cu
 ```
 
 | Parameter         | Description                                                   | Defaults     |
-| ----------------- | ------------------------------------------------------------- | ------------ |
+|-------------------|---------------------------------------------------------------|--------------|
 | **--apikey**      | OpenAI API key.                                               | _Required_   |
 | **--directory**   | Directory of the functions or of the specific function to run | _/functions_ |
 | **--unit**        | Only run unit tests                                           | false        |
