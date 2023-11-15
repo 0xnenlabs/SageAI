@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sageai"
-version = "1.0.0"
+version = "1.0.5"
 description = "File-based functions for ChatGPT's function calling with Pydantic support"
 authors = ["JUNIORCO <sami@lasso.gg>", "SamaniMK <samani@lasso.gg>"]
 license = "MIT"
@@ -10,7 +10,7 @@ keywords = ["python", "openai", "functions", "chatgpt", "gpt4", "genai", "functi
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
 pydantic = ">=1.6,<=1.10.12"
-openai = ">=0.27.0"
+openai = ">=1.2.0"
 qdrant-client = ">=1.4.0"
 
 [tool.poetry.group.dev.dependencies]

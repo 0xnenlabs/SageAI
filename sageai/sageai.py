@@ -83,11 +83,11 @@ class SageAI:
     ) -> Tuple[str, Dict[str, Any]]:
         openai_result = self.openai.chat(**openai_args, functions=top_functions)
 
-        if "function_call" not in openai_result:
+        if not openai_result.function_call:
             raise Exception("No function call found in OpenAI response.")
 
-        function_name = openai_result["function_call"]["name"]
-        function_args = json.loads(openai_result["function_call"]["arguments"])
+        function_name = openai_result.function_call.name
+        function_args = json.loads(openai_result.function_call.arguments)
         return function_name, function_args
 
     @staticmethod
